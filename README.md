@@ -16,6 +16,12 @@ npm run build    # output an optimized bundle to dist/
 npm run preview  # serve the built bundle locally to test the PWA
 ```
 
+## Deployment
+
+Live site: **https://austin-j-vincent.github.io/Senate-Oversight-Dashboard/**
+
+Every push to `main` triggers the [Deploy to GitHub Pages](.github/workflows/deploy.yml) workflow, which builds the app and publishes `dist/` to GitHub Pages. The app is served from the `/Senate-Oversight-Dashboard/` subpath (set via Vite's `base` in [vite.config.js](vite.config.js)) — keep that in mind if you fork or rename the repo.
+
 ## Install as an app (PWA)
 
 After `npm run preview` (or once deployed), open the site in a supported browser:
