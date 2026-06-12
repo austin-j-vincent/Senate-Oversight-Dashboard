@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Senate Oversight Directory">
+  <rect width="512" height="512" fill="#060d18"/>
+  <rect x="40" y="40" width="432" height="432" rx="72" fill="none" stroke="#c8a96e" stroke-opacity="0.25" stroke-width="4"/>
+  <g fill="#c8a96e">
+    <!-- finial -->
+    <circle cx="256" cy="120" r="9"/>
+    <rect x="252" y="128" width="8" height="20"/>
+    <!-- dome -->
+    <path d="M256 150 C212 150 184 192 184 232 L328 232 C328 192 300 150 256 150 Z"/>
+    <!-- drum / colonnade band -->
+    <rect x="176" y="238" width="160" height="14" rx="3"/>
+    <!-- columns -->
+    <g>
+      <rect x="186" y="258" width="12" height="70"/>
+      <rect x="214" y="258" width="12" height="70"/>
+      <rect x="242" y="258" width="12" height="70"/>
+      <rect x="270" y="258" width="12" height="70"/>
+      <rect x="298" y="258" width="12" height="70"/>
+      <rect x="314" y="258" width="12" height="70"/>
+      <rect x="172" y="258" width="12" height="70"/>
+    </g>
+    <!-- entablature + steps -->
+    <rect x="160" y="334" width="192" height="16" rx="3"/>
+    <rect x="146" y="356" width="220" height="14" rx="3"/>
+    <rect x="132" y="376" width="248" height="14" rx="3"/>
+  </g>
+</svg>
