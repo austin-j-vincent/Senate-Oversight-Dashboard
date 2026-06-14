@@ -1,0 +1,43 @@
+:root {
+  /* palette */
+  --bg-navy:    #060d18;
+  --ink:        #c8c0b0;  /* base body text */
+  --gold:       #c8a96e;  /* primary accent */
+  --cream:      #e8d8b0;  /* headings / light gold */
+  --parchment:  #d4c9b0;  /* names, input text */
+  --link:       #9bb5c8;  /* phone links */
+  --party-r:    #8b1a1a;
+  --party-d:    #1a3a6b;
+  --party-i:    #4a5568;
+  /* gold border tint (channels tokenized once; alpha varies — distinct from the --gold accent) */
+  --border-gold-rgb:   180, 150, 90;
+  --border-gold-faint:  rgba(var(--border-gold-rgb), 0.15);
+  --border-gold:        rgba(var(--border-gold-rgb), 0.2);
+  --border-gold-strong: rgba(var(--border-gold-rgb), 0.25);
+  /* layout */
+  --container:  1100px;
+
+  background-color: var(--bg-navy);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: var(--bg-navy); /* edges + overscroll stay navy */
+}
+
+html { height: 100%; }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  color: var(--ink);
+}
+
+/* things inline styles cannot express */
+input::placeholder { color: #6a7a88; }
+input:focus, select:focus { outline: none; border-color: var(--gold); }
+button { cursor: pointer; }
