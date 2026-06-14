@@ -6,10 +6,14 @@
   --cream:      #e8d8b0;  /* headings / light gold */
   --parchment:  #d4c9b0;  /* names, input text */
   --link:       #9bb5c8;  /* phone links */
-  --border-gold: rgba(180, 150, 90, 0.2);
   --party-r:    #8b1a1a;
   --party-d:    #1a3a6b;
   --party-i:    #4a5568;
+  /* gold border tint (channels tokenized once; alpha varies — distinct from the --gold accent) */
+  --border-gold-rgb:   180, 150, 90;
+  --border-gold-faint:  rgba(var(--border-gold-rgb), 0.15);
+  --border-gold:        rgba(var(--border-gold-rgb), 0.2);
+  --border-gold-strong: rgba(var(--border-gold-rgb), 0.25);
   /* layout */
   --container:  1100px;
 

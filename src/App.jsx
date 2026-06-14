@@ -248,9 +248,9 @@ function getSenatorInfo(lastName) {
 }
 
 function partyColor(party) {
-  if (party === "R") return "#8b1a1a";
-  if (party === "D") return "#1a3a6b";
-  return "#4a5568";
+  if (party === "R") return "var(--party-r)";
+  if (party === "D") return "var(--party-d)";
+  return "var(--party-i)";
 }
 
 function partyLabel(party, state) {
@@ -293,7 +293,7 @@ function CopyButton({ text, label }) {
       title={`Copy ${label}`}
       style={{
         background: copied ? "rgba(40,90,50,0.5)" : "rgba(255,255,255,0.06)",
-        border: `1px solid ${copied ? "rgba(80,160,80,0.4)" : "rgba(180,150,90,0.2)"}`,
+        border: `1px solid ${copied ? "rgba(80,160,80,0.4)" : "var(--border-gold)"}`,
         borderRadius: "3px",
         color: copied ? "#80c880" : "#7a8a98",
         fontSize: "10px",
@@ -333,18 +333,18 @@ function SenatorRow({ lastName }) {
           fontWeight: "700",
           letterSpacing: "0.04em",
           background: color,
-          color: "#e8dcc8",
+          color: "var(--cream)",
           whiteSpace: "nowrap",
           flexShrink: 0,
         }}>{tag}</span>
-        <span style={{ color: "#d4c9b0", fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: "600" }}>
+        <span style={{ color: "var(--parchment)", fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: "600" }}>
           {first} {displayName}
         </span>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px 12px", paddingLeft: "4px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           <a href={`tel:${phone}`} style={{
-            color: "#9bb5c8",
+            color: "var(--link)",
             textDecoration: "none",
             fontFamily: "'Courier Prime', 'Courier New', monospace",
             fontSize: "12px",
@@ -370,7 +370,7 @@ function CommitteePanel({ committee, defaultOpen }) {
   return (
     <div style={{
       marginBottom: "10px",
-      border: "1px solid rgba(180,160,120,0.2)",
+      border: "1px solid var(--border-gold)",
       borderRadius: "6px",
       overflow: "hidden",
       background: "rgba(10,18,30,0.6)",
@@ -389,13 +389,13 @@ function CommitteePanel({ committee, defaultOpen }) {
           border: "none",
           cursor: "pointer",
           textAlign: "left",
-          borderBottom: open ? "1px solid rgba(180,150,90,0.25)" : "none",
+          borderBottom: open ? "1px solid var(--border-gold-strong)" : "none",
           transition: "background 0.2s",
         }}
       >
         <div>
           <span style={{
-            color: "#c8a96e",
+            color: "var(--gold)",
             fontFamily: "'Playfair Display', 'Times New Roman', serif",
             fontSize: "15px",
             fontWeight: "700",
@@ -409,7 +409,7 @@ function CommitteePanel({ committee, defaultOpen }) {
           }}>{uniqueMembers.length} senators</span>
         </div>
         <span style={{
-          color: "#c8a96e",
+          color: "var(--gold)",
           fontSize: "18px",
           transform: open ? "rotate(180deg)" : "rotate(0deg)",
           transition: "transform 0.25s",
@@ -421,7 +421,7 @@ function CommitteePanel({ committee, defaultOpen }) {
         <div>
           <div style={{
             padding: "6px 16px 4px",
-            borderBottom: "1px solid rgba(180,150,90,0.15)",
+            borderBottom: "1px solid var(--border-gold-faint)",
             display: "flex",
             gap: "24px",
           }}>
@@ -430,7 +430,7 @@ function CommitteePanel({ committee, defaultOpen }) {
           </div>
           <div style={{ background: "rgba(5,12,22,0.5)" }}>
             {committee.majority.map(name => <SenatorRow key={`maj-${name}`} lastName={name} />)}
-            <div style={{ height: "1px", background: "rgba(180,150,90,0.15)", margin: "2px 0" }} />
+            <div style={{ height: "1px", background: "var(--border-gold-faint)", margin: "2px 0" }} />
             {committee.minority.map(name => <SenatorRow key={`min-${name}`} lastName={name} />)}
           </div>
         </div>
@@ -483,7 +483,7 @@ export default function App() {
       {/* Slim sticky header */}
       <header style={{
         padding: "calc(10px + env(safe-area-inset-top)) 20px 10px",
-        borderBottom: "1px solid rgba(180,150,90,0.2)",
+        borderBottom: "1px solid var(--border-gold)",
         background: "rgba(6,13,25,0.95)",
         position: "sticky",
         top: 0,
@@ -495,12 +495,12 @@ export default function App() {
           <h1 style={{
             fontFamily: "'Playfair Display', 'Times New Roman', serif",
             fontSize: "clamp(14px, 2.5vw, 18px)",
-            color: "#e8d8b0",
+            color: "var(--cream)",
             margin: 0,
             fontWeight: "700",
             lineHeight: 1.2,
           }}>
-            Senate Oversight <span style={{ color: "#c8a96e" }}>Contact Directory</span>
+            Senate Oversight <span style={{ color: "var(--gold)" }}>Contact Directory</span>
           </h1>
         </div>
       </header>
@@ -518,9 +518,9 @@ export default function App() {
             style={{
               padding: "7px 12px",
               background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(180,150,90,0.25)",
+              border: "1px solid var(--border-gold-strong)",
               borderRadius: "4px",
-              color: "#d4c9b0",
+              color: "var(--parchment)",
               fontSize: "13px",
               outline: "none",
               flex: "1 1 140px",
@@ -533,9 +533,9 @@ export default function App() {
             style={{
               padding: "7px 10px",
               background: "rgba(10,18,30,0.9)",
-              border: "1px solid rgba(180,150,90,0.25)",
+              border: "1px solid var(--border-gold-strong)",
               borderRadius: "4px",
-              color: "#d4c9b0",
+              color: "var(--parchment)",
               fontSize: "13px",
               cursor: "pointer",
             }}
@@ -551,9 +551,9 @@ export default function App() {
             style={{
               padding: "7px 10px",
               background: "rgba(10,18,30,0.9)",
-              border: "1px solid rgba(180,150,90,0.25)",
+              border: "1px solid var(--border-gold-strong)",
               borderRadius: "4px",
-              color: "#d4c9b0",
+              color: "var(--parchment)",
               fontSize: "13px",
               cursor: "pointer",
             }}
@@ -579,9 +579,9 @@ export default function App() {
 
         {/* Legend */}
         <div style={{ display: "flex", gap: "14px", flexWrap: "wrap", alignItems: "center", marginBottom: "12px" }}>
-          {[["R","#8b1a1a","Republican"],["D","#1a3a6b","Democrat"],["I","#4a5568","Independent"]].map(([party, color, label]) => (
+          {[["R","var(--party-r)","Republican"],["D","var(--party-d)","Democrat"],["I","var(--party-i)","Independent"]].map(([party, color, label]) => (
             <div key={party} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <span style={{ display: "inline-block", width: "26px", padding: "2px 0", textAlign: "center", background: color, color: "#e8dcc8", fontSize: "11px", fontWeight: "700", borderRadius: "3px" }}>{party}</span>
+              <span style={{ display: "inline-block", width: "26px", padding: "2px 0", textAlign: "center", background: color, color: "var(--cream)", fontSize: "11px", fontWeight: "700", borderRadius: "3px" }}>{party}</span>
               <span style={{ color: "#5a6870", fontSize: "12px" }}>{label}</span>
             </div>
           ))}
@@ -600,7 +600,7 @@ export default function App() {
       </main>
 
       <footer style={{
-        borderTop: "1px solid rgba(180,150,90,0.15)",
+        borderTop: "1px solid var(--border-gold-faint)",
         padding: "20px 32px",
         textAlign: "center",
         color: "#3a4a58",
