@@ -475,14 +475,14 @@ export default function App() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#060d18",
+      background: "var(--bg-navy)",
       backgroundImage: "radial-gradient(ellipse at 20% 0%, rgba(30,50,80,0.4) 0%, transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(80,30,20,0.25) 0%, transparent 60%)",
       fontFamily: "'Source Sans 3', 'Helvetica Neue', sans-serif",
-      color: "#c8c0b0",
+      color: "var(--ink)",
     }}>
       {/* Slim sticky header */}
       <header style={{
-        padding: "10px 20px",
+        padding: "calc(10px + env(safe-area-inset-top)) 20px 10px",
         borderBottom: "1px solid rgba(180,150,90,0.2)",
         background: "rgba(6,13,25,0.95)",
         position: "sticky",
@@ -490,7 +490,7 @@ export default function App() {
         zIndex: 100,
         backdropFilter: "blur(12px)",
       }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
           <div style={{ fontSize: "9px", letterSpacing: "0.2em", color: "#6a5a40", fontWeight: "700", textTransform: "uppercase", marginBottom: "2px" }}>119th Congress · 2025–2026</div>
           <h1 style={{
             fontFamily: "'Playfair Display', 'Times New Roman', serif",
@@ -506,7 +506,7 @@ export default function App() {
       </header>
 
       {/* Committees */}
-      <main style={{ maxWidth: "1100px", margin: "0 auto", padding: "14px 16px 40px" }}>
+      <main style={{ maxWidth: "var(--container)", margin: "0 auto", padding: "14px 16px 40px" }}>
 
         {/* Filters */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", marginBottom: "10px" }}>
