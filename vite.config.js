@@ -17,6 +17,7 @@ export default defineConfig({
         short_name: "Senate Directory",
         description:
           "119th Congress Senate committee rosters with phone numbers and DC office addresses.",
+        // both mirror --bg-navy in src/index.css; keep in sync (manifest JSON can't use CSS vars)
         theme_color: "#060d18",
         background_color: "#060d18",
         display: "standalone",

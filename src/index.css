@@ -1,20 +1,61 @@
 :root {
-  /* palette */
+  /* ============ Brand / core ============ */
   --bg-navy:    #060d18;
   --ink:        #c8c0b0;  /* base body text */
   --gold:       #c8a96e;  /* primary accent */
-  --cream:      #e8d8b0;  /* headings / light gold */
+  --cream:      #e8d8b0;  /* light gold — party tags */
   --parchment:  #d4c9b0;  /* names, input text */
   --link:       #9bb5c8;  /* phone links */
-  --party-r:    #8b1a1a;
+
+  /* ============ Party ============ */
+  /* channel-tokenized so the same red also drives the danger accents */
+  --party-r-rgb: 139, 26, 26;            /* #8b1a1a */
+  --party-r:    rgb(var(--party-r-rgb));
   --party-d:    #1a3a6b;
   --party-i:    #4a5568;
+
+  /* ============ Muted text scale ============ */
+  --text-secondary: #8a9aaa;  /* addresses */
+  --text-tertiary:  #6b7a88;  /* labels, counts, copy-btn, separators, placeholder */
+  --text-muted:     #5a6870;  /* legend labels */
+  --text-faint:     #3a4a58;  /* hints, footer, empty-state */
+  --text-eyebrow:   #6a5a40;  /* warm gold-gray — "119th Congress" */
+
+  /* ============ Surfaces ============ */
+  /* --surface-base-rgb is the shared panel/select navy. header & rows are intentionally
+     darker one-off navys; -head-open is an intentional warm accent (none are --bg-navy). */
+  --surface-base-rgb:        10, 18, 30;
+  --surface-panel:           rgba(var(--surface-base-rgb), 0.6);  /* committee card */
+  --surface-select:          rgba(var(--surface-base-rgb), 0.9);  /* dropdowns */
+  --surface-header:          rgba(6, 13, 25, 0.95);               /* sticky header */
+  --surface-rows:            rgba(5, 12, 22, 0.5);                /* senator rows */
+  --surface-panel-head:      rgba(20, 30, 45, 0.6);               /* closed panel header */
+  --surface-panel-head-open: rgba(60, 40, 20, 0.4);              /* open panel header (warm accent) */
+
+  /* ============ Overlays ============ */
+  --overlay-light: rgba(255, 255, 255, 0.06);  /* subtle white — inputs, copy btn, row divider */
+
+  /* ============ Borders ============ */
   /* gold border tint (channels tokenized once; alpha varies — distinct from the --gold accent) */
   --border-gold-rgb:   180, 150, 90;
   --border-gold-faint:  rgba(var(--border-gold-rgb), 0.15);
   --border-gold:        rgba(var(--border-gold-rgb), 0.2);
   --border-gold-strong: rgba(var(--border-gold-rgb), 0.25);
-  /* layout */
+
+  /* ============ State accents ============ */
+  --success:        #80c880;                          /* copied text */
+  --success-bg:     rgba(40, 90, 50, 0.5);
+  --success-border: rgba(80, 160, 80, 0.4);
+  --danger:         #d08080;                          /* clear-button text */
+  --danger-bg:      rgba(var(--party-r-rgb), 0.25);
+  --danger-border:  rgba(var(--party-r-rgb), 0.4);
+
+  /* ============ Decoration ============ */
+  --glow-top:     rgba(30, 50, 80, 0.4);   /* radial gradient, top-left */
+  --glow-bottom:  rgba(80, 30, 20, 0.25);  /* radial gradient, bottom-right */
+  --shadow-panel: rgba(0, 0, 0, 0.4);      /* open-panel drop shadow */
+
+  /* ============ Layout ============ */
   --container:  1100px;
 
   background-color: var(--bg-navy);
@@ -38,6 +79,6 @@ body {
 }
 
 /* things inline styles cannot express */
-input::placeholder { color: #6a7a88; }
+input::placeholder { color: var(--text-tertiary); }
 input:focus, select:focus { outline: none; border-color: var(--gold); }
 button { cursor: pointer; }
