@@ -292,10 +292,10 @@ function CopyButton({ text, label }) {
       onClick={handleCopy}
       title={`Copy ${label}`}
       style={{
-        background: copied ? "rgba(40,90,50,0.5)" : "rgba(255,255,255,0.06)",
-        border: `1px solid ${copied ? "rgba(80,160,80,0.4)" : "var(--border-gold)"}`,
+        background: copied ? "var(--success-bg)" : "var(--overlay-light)",
+        border: `1px solid ${copied ? "var(--success-border)" : "var(--border-gold)"}`,
         borderRadius: "3px",
-        color: copied ? "#80c880" : "#7a8a98",
+        color: copied ? "var(--success)" : "var(--text-tertiary)",
         fontSize: "10px",
         padding: "2px 6px",
         cursor: "pointer",
@@ -321,7 +321,7 @@ function SenatorRow({ lastName }) {
   return (
     <div style={{
       padding: "10px 16px",
-      borderBottom: "1px solid rgba(255,255,255,0.06)",
+      borderBottom: "1px solid var(--overlay-light)",
       fontSize: "13px",
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "5px" }}>
@@ -353,8 +353,8 @@ function SenatorRow({ lastName }) {
           <CopyButton text={phone} label="phone" />
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          <span style={{ color: "#6a7a88", fontSize: "11px" }}>·</span>
-          <span style={{ color: "#8a9aaa", fontSize: "12px", lineHeight: "1.4" }}>{address}</span>
+          <span style={{ color: "var(--text-tertiary)", fontSize: "11px" }}>·</span>
+          <span style={{ color: "var(--text-secondary)", fontSize: "12px", lineHeight: "1.4" }}>{address}</span>
           <CopyButton text={address} label="address" />
         </div>
       </div>
@@ -373,8 +373,8 @@ function CommitteePanel({ committee, defaultOpen }) {
       border: "1px solid var(--border-gold)",
       borderRadius: "6px",
       overflow: "hidden",
-      background: "rgba(10,18,30,0.6)",
-      boxShadow: open ? "0 4px 24px rgba(0,0,0,0.4)" : "none",
+      background: "var(--surface-panel)",
+      boxShadow: open ? "0 4px 24px var(--shadow-panel)" : "none",
       transition: "box-shadow 0.3s",
     }}>
       <button
@@ -385,7 +385,7 @@ function CommitteePanel({ committee, defaultOpen }) {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "14px 20px",
-          background: open ? "rgba(60,40,20,0.4)" : "rgba(20,30,45,0.6)",
+          background: open ? "var(--surface-panel-head-open)" : "var(--surface-panel-head)",
           border: "none",
           cursor: "pointer",
           textAlign: "left",
@@ -403,7 +403,7 @@ function CommitteePanel({ committee, defaultOpen }) {
           }}>{committee.name}</span>
           <span style={{
             marginLeft: "14px",
-            color: "#6b8090",
+            color: "var(--text-tertiary)",
             fontSize: "12px",
             fontFamily: "'Courier Prime', monospace",
           }}>{uniqueMembers.length} senators</span>
@@ -425,10 +425,10 @@ function CommitteePanel({ committee, defaultOpen }) {
             display: "flex",
             gap: "24px",
           }}>
-            <span style={{ color: "#6b7a88", fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase" }}>Senator</span>
-            <span style={{ color: "#6b7a88", fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase" }}>Phone · DC Mailing Address</span>
+            <span style={{ color: "var(--text-tertiary)", fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase" }}>Senator</span>
+            <span style={{ color: "var(--text-tertiary)", fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase" }}>Phone · DC Mailing Address</span>
           </div>
-          <div style={{ background: "rgba(5,12,22,0.5)" }}>
+          <div style={{ background: "var(--surface-rows)" }}>
             {committee.majority.map(name => <SenatorRow key={`maj-${name}`} lastName={name} />)}
             <div style={{ height: "1px", background: "var(--border-gold-faint)", margin: "2px 0" }} />
             {committee.minority.map(name => <SenatorRow key={`min-${name}`} lastName={name} />)}
@@ -476,7 +476,7 @@ export default function App() {
     <div style={{
       minHeight: "100vh",
       background: "var(--bg-navy)",
-      backgroundImage: "radial-gradient(ellipse at 20% 0%, rgba(30,50,80,0.4) 0%, transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(80,30,20,0.25) 0%, transparent 60%)",
+      backgroundImage: "radial-gradient(ellipse at 20% 0%, var(--glow-top) 0%, transparent 60%), radial-gradient(ellipse at 80% 100%, var(--glow-bottom) 0%, transparent 60%)",
       fontFamily: "'Source Sans 3', 'Helvetica Neue', sans-serif",
       color: "var(--ink)",
     }}>
@@ -484,23 +484,23 @@ export default function App() {
       <header style={{
         padding: "calc(10px + env(safe-area-inset-top)) 20px 10px",
         borderBottom: "1px solid var(--border-gold)",
-        background: "rgba(6,13,25,0.95)",
+        background: "var(--surface-header)",
         position: "sticky",
         top: 0,
         zIndex: 100,
         backdropFilter: "blur(12px)",
       }}>
         <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
-          <div style={{ fontSize: "9px", letterSpacing: "0.2em", color: "#6a5a40", fontWeight: "700", textTransform: "uppercase", marginBottom: "2px" }}>119th Congress · 2025–2026</div>
+          <div style={{ fontSize: "9px", letterSpacing: "0.2em", color: "var(--text-eyebrow)", fontWeight: "700", textTransform: "uppercase", marginBottom: "2px" }}>119th Congress · 2025–2026</div>
           <h1 style={{
             fontFamily: "'Playfair Display', 'Times New Roman', serif",
             fontSize: "clamp(14px, 2.5vw, 18px)",
-            color: "var(--cream)",
+            color: "var(--gold)",
             margin: 0,
             fontWeight: "700",
             lineHeight: 1.2,
           }}>
-            Senate Oversight <span style={{ color: "var(--gold)" }}>Contact Directory</span>
+            Senate Oversight Contact Directory
           </h1>
         </div>
       </header>
@@ -517,7 +517,7 @@ export default function App() {
             onChange={e => setSearch(e.target.value)}
             style={{
               padding: "7px 12px",
-              background: "rgba(255,255,255,0.05)",
+              background: "var(--overlay-light)",
               border: "1px solid var(--border-gold-strong)",
               borderRadius: "4px",
               color: "var(--parchment)",
@@ -532,7 +532,7 @@ export default function App() {
             onChange={e => setFilterParty(e.target.value)}
             style={{
               padding: "7px 10px",
-              background: "rgba(10,18,30,0.9)",
+              background: "var(--surface-select)",
               border: "1px solid var(--border-gold-strong)",
               borderRadius: "4px",
               color: "var(--parchment)",
@@ -550,7 +550,7 @@ export default function App() {
             onChange={e => setFilterState(e.target.value)}
             style={{
               padding: "7px 10px",
-              background: "rgba(10,18,30,0.9)",
+              background: "var(--surface-select)",
               border: "1px solid var(--border-gold-strong)",
               borderRadius: "4px",
               color: "var(--parchment)",
@@ -566,10 +566,10 @@ export default function App() {
               onClick={() => { setSearch(""); setFilterParty("all"); setFilterState(""); }}
               style={{
                 padding: "7px 10px",
-                background: "rgba(139,26,26,0.25)",
-                border: "1px solid rgba(139,26,26,0.4)",
+                background: "var(--danger-bg)",
+                border: "1px solid var(--danger-border)",
                 borderRadius: "4px",
-                color: "#d08080",
+                color: "var(--danger)",
                 fontSize: "12px",
                 cursor: "pointer",
               }}
@@ -582,14 +582,14 @@ export default function App() {
           {[["R","var(--party-r)","Republican"],["D","var(--party-d)","Democrat"],["I","var(--party-i)","Independent"]].map(([party, color, label]) => (
             <div key={party} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <span style={{ display: "inline-block", width: "26px", padding: "2px 0", textAlign: "center", background: color, color: "var(--cream)", fontSize: "11px", fontWeight: "700", borderRadius: "3px" }}>{party}</span>
-              <span style={{ color: "#5a6870", fontSize: "12px" }}>{label}</span>
+              <span style={{ color: "var(--text-muted)", fontSize: "12px" }}>{label}</span>
             </div>
           ))}
-          <span style={{ color: "#3a4a58", fontSize: "11px", marginLeft: "auto" }}>Majority first · tap to expand</span>
+          <span style={{ color: "var(--text-faint)", fontSize: "11px", marginLeft: "auto" }}>Majority first · tap to expand</span>
         </div>
 
         {filtered.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "60px 0", color: "#4a5a68" }}>
+          <div style={{ textAlign: "center", padding: "60px 0", color: "var(--text-faint)" }}>
             No results match your filters.
           </div>
         ) : (
@@ -603,7 +603,7 @@ export default function App() {
         borderTop: "1px solid var(--border-gold-faint)",
         padding: "20px 32px",
         textAlign: "center",
-        color: "#3a4a58",
+        color: "var(--text-faint)",
         fontSize: "11px",
         letterSpacing: "0.05em",
       }}>
