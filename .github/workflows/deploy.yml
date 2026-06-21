@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Weekly auto-refresh of Congress data (Mondays 08:00 UTC)
+    - cron: "0 8 * * 1"
 
 # Allow the GITHUB_TOKEN to deploy to Pages
 permissions:
@@ -26,6 +29,11 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      # Refresh data from the Congress API (key from repo secret; never in the bundle).
+      # Resilient: if this fails, the committed JSON is used and the build still succeeds.
+      - run: npm run fetch-data
+        env:
+          CONGRESS_API_KEY: ${{ secrets.CONGRESS_API_KEY }}
       - run: npm run build
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5

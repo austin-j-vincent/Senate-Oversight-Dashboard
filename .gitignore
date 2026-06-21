@@ -8,6 +8,11 @@ node_modules/
 dist/
 dev-dist/
 
+# Local env (holds the real CONGRESS_API_KEY — never commit)
+.env
+.env.local
+.env.*.local
+
 # Logs
 *.log
 

@@ -1,0 +1,1002 @@
+{
+  "B001288": {
+    "bioguide": "B001288",
+    "first": "Cory A.",
+    "last": "Booker",
+    "party": "D",
+    "state": "NJ",
+    "phone": "202-224-3224",
+    "address": "B40E Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001288_200.jpg"
+  },
+  "S001150": {
+    "bioguide": "S001150",
+    "first": "Adam B.",
+    "last": "Schiff",
+    "party": "D",
+    "state": "CA",
+    "phone": "202-224-3841",
+    "address": "B40C Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/677d870dfdb6cf36bbb649b3_200.jpg"
+  },
+  "A000383": {
+    "bioguide": "A000383",
+    "first": "Alan",
+    "last": "Armstrong",
+    "party": "R",
+    "state": "OK",
+    "phone": "202-224-4721",
+    "address": "330 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": ""
+  },
+  "Y000064": {
+    "bioguide": "Y000064",
+    "first": "Todd",
+    "last": "Young",
+    "party": "R",
+    "state": "IN",
+    "phone": "202-224-5623",
+    "address": "185 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/y000064_200.jpg"
+  },
+  "W000779": {
+    "bioguide": "W000779",
+    "first": "Ron",
+    "last": "Wyden",
+    "party": "D",
+    "state": "OR",
+    "phone": "202-224-5244",
+    "address": "221 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/w000779_200.jpg"
+  },
+  "W000437": {
+    "bioguide": "W000437",
+    "first": "Roger F.",
+    "last": "Wicker",
+    "party": "R",
+    "state": "MS",
+    "phone": "202-224-6253",
+    "address": "425 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/f49ac425119375e9fe6a075762734079_200.jpg"
+  },
+  "W000802": {
+    "bioguide": "W000802",
+    "first": "Sheldon",
+    "last": "Whitehouse",
+    "party": "D",
+    "state": "RI",
+    "phone": "202-224-2921",
+    "address": "530 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/w000802_200.jpg"
+  },
+  "W000800": {
+    "bioguide": "W000800",
+    "first": "Peter",
+    "last": "Welch",
+    "party": "D",
+    "state": "VT",
+    "phone": "202-224-4242",
+    "address": "115 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/fd3cb364b8bf93c25834cff750637802_200.jpg"
+  },
+  "W000817": {
+    "bioguide": "W000817",
+    "first": "Elizabeth",
+    "last": "Warren",
+    "party": "D",
+    "state": "MA",
+    "phone": "202-224-4543",
+    "address": "311 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/w000817_200.jpg"
+  },
+  "W000790": {
+    "bioguide": "W000790",
+    "first": "Raphael G.",
+    "last": "Warnock",
+    "party": "D",
+    "state": "GA",
+    "phone": "202-224-3643",
+    "address": "717 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/w000790_200.jpg"
+  },
+  "W000805": {
+    "bioguide": "W000805",
+    "first": "Mark R.",
+    "last": "Warner",
+    "party": "D",
+    "state": "VA",
+    "phone": "202-224-2023",
+    "address": "703 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/w000805_200.jpg"
+  },
+  "V000128": {
+    "bioguide": "V000128",
+    "first": "Chris",
+    "last": "Van Hollen",
+    "party": "D",
+    "state": "MD",
+    "phone": "202-224-4654",
+    "address": "730 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/v000128_200.jpg"
+  },
+  "T000278": {
+    "bioguide": "T000278",
+    "first": "Tommy",
+    "last": "Tuberville",
+    "party": "R",
+    "state": "AL",
+    "phone": "202-224-4124",
+    "address": "455 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/t000278_200.jpg"
+  },
+  "T000476": {
+    "bioguide": "T000476",
+    "first": "Thom",
+    "last": "Tillis",
+    "party": "R",
+    "state": "NC",
+    "phone": "202-224-6342",
+    "address": "113 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/t000476_200.jpg"
+  },
+  "T000250": {
+    "bioguide": "T000250",
+    "first": "John",
+    "last": "Thune",
+    "party": "R",
+    "state": "SD",
+    "phone": "202-224-2321",
+    "address": "511 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/t000250_200.jpg"
+  },
+  "S001198": {
+    "bioguide": "S001198",
+    "first": "Dan",
+    "last": "Sullivan",
+    "party": "R",
+    "state": "AK",
+    "phone": "202-224-3004",
+    "address": "706 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s001198_200.jpg"
+  },
+  "S001203": {
+    "bioguide": "S001203",
+    "first": "Tina",
+    "last": "Smith",
+    "party": "D",
+    "state": "MN",
+    "phone": "202-224-5641",
+    "address": "720 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s001203_200.jpg"
+  },
+  "S001208": {
+    "bioguide": "S001208",
+    "first": "Elissa",
+    "last": "Slotkin",
+    "party": "D",
+    "state": "MI",
+    "phone": "202-224-4822",
+    "address": "291 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s001208_200.jpg"
+  },
+  "S001232": {
+    "bioguide": "S001232",
+    "first": "Tim",
+    "last": "Sheehy",
+    "party": "R",
+    "state": "MT",
+    "phone": "202-224-2644",
+    "address": "124 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/677d8231fdb6cf36bbb6498b_200.jpg"
+  },
+  "S001181": {
+    "bioguide": "S001181",
+    "first": "Jeanne",
+    "last": "Shaheen",
+    "party": "D",
+    "state": "NH",
+    "phone": "202-224-2841",
+    "address": "506 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s001181_200.jpg"
+  },
+  "S001217": {
+    "bioguide": "S001217",
+    "first": "Rick",
+    "last": "Scott",
+    "party": "R",
+    "state": "FL",
+    "phone": "202-224-5274",
+    "address": "110 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s001217_200.jpg"
+  },
+  "S001184": {
+    "bioguide": "S001184",
+    "first": "Tim",
+    "last": "Scott",
+    "party": "R",
+    "state": "SC",
+    "phone": "202-224-6121",
+    "address": "104 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s001184_200.jpg"
+  },
+  "S000148": {
+    "bioguide": "S000148",
+    "first": "Charles E.",
+    "last": "Schumer",
+    "party": "D",
+    "state": "NY",
+    "phone": "202-224-6542",
+    "address": "322 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s000148_200.jpg"
+  },
+  "S001227": {
+    "bioguide": "S001227",
+    "first": "Eric",
+    "last": "Schmitt",
+    "party": "R",
+    "state": "MO",
+    "phone": "202-224-5721",
+    "address": "404 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b66a0806e77f63e862391b15a0b1f753_200.jpg"
+  },
+  "S001194": {
+    "bioguide": "S001194",
+    "first": "Brian",
+    "last": "Schatz",
+    "party": "D",
+    "state": "HI",
+    "phone": "202-224-3934",
+    "address": "722 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s001194_200.jpg"
+  },
+  "S000033": {
+    "bioguide": "S000033",
+    "first": "Bernard",
+    "last": "Sanders",
+    "party": "I",
+    "state": "VT",
+    "phone": "202-224-5141",
+    "address": "332 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/s000033_200.jpg"
+  },
+  "R000605": {
+    "bioguide": "R000605",
+    "first": "Mike",
+    "last": "Rounds",
+    "party": "R",
+    "state": "SD",
+    "phone": "202-224-5842",
+    "address": "716 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/r000605_200.jpg"
+  },
+  "R000608": {
+    "bioguide": "R000608",
+    "first": "Jacky",
+    "last": "Rosen",
+    "party": "D",
+    "state": "NV",
+    "phone": "202-224-6244",
+    "address": "713 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/r000608_200.jpg"
+  },
+  "R000584": {
+    "bioguide": "R000584",
+    "first": "James E.",
+    "last": "Risch",
+    "party": "R",
+    "state": "ID",
+    "phone": "202-224-2752",
+    "address": "483 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/r000584_200.jpg"
+  },
+  "R000618": {
+    "bioguide": "R000618",
+    "first": "Pete",
+    "last": "Ricketts",
+    "party": "R",
+    "state": "NE",
+    "phone": "202-224-4224",
+    "address": "139 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/r000618_200.jpg"
+  },
+  "R000122": {
+    "bioguide": "R000122",
+    "first": "Jack",
+    "last": "Reed",
+    "party": "D",
+    "state": "RI",
+    "phone": "202-224-4642",
+    "address": "728 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/r000122_200.jpg"
+  },
+  "P000595": {
+    "bioguide": "P000595",
+    "first": "Gary C.",
+    "last": "Peters",
+    "party": "D",
+    "state": "MI",
+    "phone": "202-224-6221",
+    "address": "724 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/p000595_200.jpg"
+  },
+  "P000603": {
+    "bioguide": "P000603",
+    "first": "Rand",
+    "last": "Paul",
+    "party": "R",
+    "state": "KY",
+    "phone": "202-224-4343",
+    "address": "295 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/p000603_200.jpg"
+  },
+  "P000145": {
+    "bioguide": "P000145",
+    "first": "Alex",
+    "last": "Padilla",
+    "party": "D",
+    "state": "CA",
+    "phone": "202-224-3553",
+    "address": "331 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/p000145_200.jpg"
+  },
+  "O000174": {
+    "bioguide": "O000174",
+    "first": "Jon",
+    "last": "Ossoff",
+    "party": "D",
+    "state": "GA",
+    "phone": "202-224-3521",
+    "address": "317 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/o000174_200.jpg"
+  },
+  "M001111": {
+    "bioguide": "M001111",
+    "first": "Patty",
+    "last": "Murray",
+    "party": "D",
+    "state": "WA",
+    "phone": "202-224-2621",
+    "address": "154 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/1b52ad6d215684d847d1c2bf28b9b262_200.jpg"
+  },
+  "M001169": {
+    "bioguide": "M001169",
+    "first": "Christopher",
+    "last": "Murphy",
+    "party": "D",
+    "state": "CT",
+    "phone": "202-224-4041",
+    "address": "136 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/m001169_200.jpg"
+  },
+  "M001153": {
+    "bioguide": "M001153",
+    "first": "Lisa",
+    "last": "Murkowski",
+    "party": "R",
+    "state": "AK",
+    "phone": "202-224-6665",
+    "address": "522 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/m001153_200.jpg"
+  },
+  "M001242": {
+    "bioguide": "M001242",
+    "first": "Bernie",
+    "last": "Moreno",
+    "party": "R",
+    "state": "OH",
+    "phone": "202-224-2315",
+    "address": "284 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/67c8694e6159152e59828afb_200.jpg"
+  },
+  "M000934": {
+    "bioguide": "M000934",
+    "first": "Jerry",
+    "last": "Moran",
+    "party": "R",
+    "state": "KS",
+    "phone": "202-224-6521",
+    "address": "521 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/m000934_200.jpg"
+  },
+  "M001244": {
+    "bioguide": "M001244",
+    "first": "Ashley",
+    "last": "Moody",
+    "party": "R",
+    "state": "FL",
+    "phone": "202-224-3041",
+    "address": "387 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://bioguide.congress.gov/photo/695d82c8550dfb80c3063bee.jpg"
+  },
+  "M001176": {
+    "bioguide": "M001176",
+    "first": "Jeff",
+    "last": "Merkley",
+    "party": "D",
+    "state": "OR",
+    "phone": "202-224-3753",
+    "address": "531 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/m001176_200.jpg"
+  },
+  "M001243": {
+    "bioguide": "M001243",
+    "first": "David",
+    "last": "McCormick",
+    "party": "R",
+    "state": "PA",
+    "phone": "202-224-6324",
+    "address": "702 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/677d85e0fdb6cf36bbb649aa_200.jpg"
+  },
+  "M000355": {
+    "bioguide": "M000355",
+    "first": "Mitch",
+    "last": "McConnell",
+    "party": "R",
+    "state": "KY",
+    "phone": "202-224-2541",
+    "address": "317 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/m000355_200.jpg"
+  },
+  "M001198": {
+    "bioguide": "M001198",
+    "first": "Roger",
+    "last": "Marshall",
+    "party": "R",
+    "state": "KS",
+    "phone": "202-224-4774",
+    "address": "479A Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/m001198_200.jpg"
+  },
+  "M000133": {
+    "bioguide": "M000133",
+    "first": "Edward J.",
+    "last": "Markey",
+    "party": "D",
+    "state": "MA",
+    "phone": "202-224-2742",
+    "address": "255 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/m000133_200.jpg"
+  },
+  "L000571": {
+    "bioguide": "L000571",
+    "first": "Cynthia M.",
+    "last": "Lummis",
+    "party": "R",
+    "state": "WY",
+    "phone": "202-224-3424",
+    "address": "127A Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/l000571_200.jpg"
+  },
+  "L000570": {
+    "bioguide": "L000570",
+    "first": "Ben Ray",
+    "last": "Luján",
+    "party": "D",
+    "state": "NM",
+    "phone": "202-224-6621",
+    "address": "498 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/l000570_200.jpg"
+  },
+  "L000577": {
+    "bioguide": "L000577",
+    "first": "Mike",
+    "last": "Lee",
+    "party": "R",
+    "state": "UT",
+    "phone": "202-224-5444",
+    "address": "363 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/l000577_200.jpg"
+  },
+  "L000575": {
+    "bioguide": "L000575",
+    "first": "James",
+    "last": "Lankford",
+    "party": "R",
+    "state": "OK",
+    "phone": "202-224-5754",
+    "address": "731 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/l000575_200.jpg"
+  },
+  "K000367": {
+    "bioguide": "K000367",
+    "first": "Amy",
+    "last": "Klobuchar",
+    "party": "D",
+    "state": "MN",
+    "phone": "202-224-3244",
+    "address": "425 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/k000367_200.jpg"
+  },
+  "K000383": {
+    "bioguide": "K000383",
+    "first": "Angus",
+    "last": "King",
+    "party": "I",
+    "state": "ME",
+    "phone": "202-224-5344",
+    "address": "133 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/k000383_200.jpg"
+  },
+  "K000394": {
+    "bioguide": "K000394",
+    "first": "Andy",
+    "last": "Kim",
+    "party": "D",
+    "state": "NJ",
+    "phone": "202-224-4744",
+    "address": "520 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/677d84cbfdb6cf36bbb649a1_200.jpg"
+  },
+  "K000393": {
+    "bioguide": "K000393",
+    "first": "John",
+    "last": "Kennedy",
+    "party": "R",
+    "state": "LA",
+    "phone": "202-224-4623",
+    "address": "437 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/k000393_200.jpg"
+  },
+  "K000377": {
+    "bioguide": "K000377",
+    "first": "Mark",
+    "last": "Kelly",
+    "party": "D",
+    "state": "AZ",
+    "phone": "202-224-2235",
+    "address": "516 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/k000377_200.jpg"
+  },
+  "K000384": {
+    "bioguide": "K000384",
+    "first": "Tim",
+    "last": "Kaine",
+    "party": "D",
+    "state": "VA",
+    "phone": "202-224-4024",
+    "address": "231 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/k000384_200.jpg"
+  },
+  "J000312": {
+    "bioguide": "J000312",
+    "first": "James C.",
+    "last": "Justice",
+    "party": "R",
+    "state": "WV",
+    "phone": "202-224-3954",
+    "address": "509 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/67c86b5e6159152e59828b1a_200.jpg"
+  },
+  "J000293": {
+    "bioguide": "J000293",
+    "first": "Ron",
+    "last": "Johnson",
+    "party": "R",
+    "state": "WI",
+    "phone": "202-224-5323",
+    "address": "328 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/j000293_200.jpg"
+  },
+  "H001079": {
+    "bioguide": "H001079",
+    "first": "Cindy",
+    "last": "Hyde-Smith",
+    "party": "R",
+    "state": "MS",
+    "phone": "202-224-5054",
+    "address": "528 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/h001079_200.jpg"
+  },
+  "H001104": {
+    "bioguide": "H001104",
+    "first": "Jon",
+    "last": "Husted",
+    "party": "R",
+    "state": "OH",
+    "phone": "202-224-3353",
+    "address": "304 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/67f0316b1b05a5a598f7fdf3_200.jpg"
+  },
+  "H001061": {
+    "bioguide": "H001061",
+    "first": "John",
+    "last": "Hoeven",
+    "party": "R",
+    "state": "ND",
+    "phone": "202-224-2551",
+    "address": "338 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/h001061_200.jpg"
+  },
+  "H001042": {
+    "bioguide": "H001042",
+    "first": "Mazie K.",
+    "last": "Hirono",
+    "party": "D",
+    "state": "HI",
+    "phone": "202-224-6361",
+    "address": "109 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/h001042_200.jpg"
+  },
+  "H000273": {
+    "bioguide": "H000273",
+    "first": "John W.",
+    "last": "Hickenlooper",
+    "party": "D",
+    "state": "CO",
+    "phone": "202-224-5941",
+    "address": "316 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/h000273_200.jpg"
+  },
+  "H001046": {
+    "bioguide": "H001046",
+    "first": "Martin",
+    "last": "Heinrich",
+    "party": "D",
+    "state": "NM",
+    "phone": "202-224-5521",
+    "address": "709 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/h001046_200.jpg"
+  },
+  "H001089": {
+    "bioguide": "H001089",
+    "first": "Josh",
+    "last": "Hawley",
+    "party": "R",
+    "state": "MO",
+    "phone": "202-224-6154",
+    "address": "381 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/h001089_200.jpg"
+  },
+  "H001076": {
+    "bioguide": "H001076",
+    "first": "Margaret Wood",
+    "last": "Hassan",
+    "party": "D",
+    "state": "NH",
+    "phone": "202-224-3324",
+    "address": "324 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/h001076_200.jpg"
+  },
+  "H000601": {
+    "bioguide": "H000601",
+    "first": "Bill",
+    "last": "Hagerty",
+    "party": "R",
+    "state": "TN",
+    "phone": "202-224-4944",
+    "address": "251 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/h000601_200.jpg"
+  },
+  "G000386": {
+    "bioguide": "G000386",
+    "first": "Chuck",
+    "last": "Grassley",
+    "party": "R",
+    "state": "IA",
+    "phone": "202-224-3744",
+    "address": "135 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/g000386_200.jpg"
+  },
+  "G000359": {
+    "bioguide": "G000359",
+    "first": "Lindsey",
+    "last": "Graham",
+    "party": "R",
+    "state": "SC",
+    "phone": "202-224-5972",
+    "address": "211 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/g000359_200.jpg"
+  },
+  "G000555": {
+    "bioguide": "G000555",
+    "first": "Kirsten E.",
+    "last": "Gillibrand",
+    "party": "D",
+    "state": "NY",
+    "phone": "202-224-4451",
+    "address": "478 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/g000555_200.jpg"
+  },
+  "G000574": {
+    "bioguide": "G000574",
+    "first": "Ruben",
+    "last": "Gallego",
+    "party": "D",
+    "state": "AZ",
+    "phone": "202-224-4521",
+    "address": "302 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c6870f487cf4bc9a568d8afbe61d754b_200.jpg"
+  },
+  "F000463": {
+    "bioguide": "F000463",
+    "first": "Deb",
+    "last": "Fischer",
+    "party": "R",
+    "state": "NE",
+    "phone": "202-224-6551",
+    "address": "448 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/669ec7925d19788d1f2034a1_200.jpg"
+  },
+  "F000479": {
+    "bioguide": "F000479",
+    "first": "John",
+    "last": "Fetterman",
+    "party": "D",
+    "state": "PA",
+    "phone": "202-224-4254",
+    "address": "142 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/f000479_200.jpg"
+  },
+  "E000295": {
+    "bioguide": "E000295",
+    "first": "Joni",
+    "last": "Ernst",
+    "party": "R",
+    "state": "IA",
+    "phone": "202-224-3254",
+    "address": "260 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/e000295_200.jpg"
+  },
+  "D000563": {
+    "bioguide": "D000563",
+    "first": "Richard J.",
+    "last": "Durbin",
+    "party": "D",
+    "state": "IL",
+    "phone": "202-224-2152",
+    "address": "711 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/d000563_200.jpg"
+  },
+  "D000622": {
+    "bioguide": "D000622",
+    "first": "Tammy",
+    "last": "Duckworth",
+    "party": "D",
+    "state": "IL",
+    "phone": "202-224-2854",
+    "address": "524 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/d000622_200.jpg"
+  },
+  "D000618": {
+    "bioguide": "D000618",
+    "first": "Steve",
+    "last": "Daines",
+    "party": "R",
+    "state": "MT",
+    "phone": "202-224-2651",
+    "address": "320 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/d000618_200.jpg"
+  },
+  "C001114": {
+    "bioguide": "C001114",
+    "first": "John R.",
+    "last": "Curtis",
+    "party": "R",
+    "state": "UT",
+    "phone": "202-224-5251",
+    "address": "502 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/1b9d1007d6895a37da28a67cd8149803_200.jpg"
+  },
+  "C001098": {
+    "bioguide": "C001098",
+    "first": "Ted",
+    "last": "Cruz",
+    "party": "R",
+    "state": "TX",
+    "phone": "202-224-5922",
+    "address": "167 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001098_200.jpg"
+  },
+  "C000880": {
+    "bioguide": "C000880",
+    "first": "Mike",
+    "last": "Crapo",
+    "party": "R",
+    "state": "ID",
+    "phone": "202-224-6142",
+    "address": "239 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c000880_200.jpg"
+  },
+  "C001096": {
+    "bioguide": "C001096",
+    "first": "Kevin",
+    "last": "Cramer",
+    "party": "R",
+    "state": "ND",
+    "phone": "202-224-2043",
+    "address": "313 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001096_200.jpg"
+  },
+  "C001095": {
+    "bioguide": "C001095",
+    "first": "Tom",
+    "last": "Cotton",
+    "party": "R",
+    "state": "AR",
+    "phone": "202-224-2353",
+    "address": "326 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001095_200.jpg"
+  },
+  "C001113": {
+    "bioguide": "C001113",
+    "first": "Catherine",
+    "last": "Cortez Masto",
+    "party": "D",
+    "state": "NV",
+    "phone": "202-224-3542",
+    "address": "309 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001113_200.jpg"
+  },
+  "C001056": {
+    "bioguide": "C001056",
+    "first": "John",
+    "last": "Cornyn",
+    "party": "R",
+    "state": "TX",
+    "phone": "202-224-2934",
+    "address": "517 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001056_200.jpg"
+  },
+  "C001088": {
+    "bioguide": "C001088",
+    "first": "Christopher A.",
+    "last": "Coons",
+    "party": "D",
+    "state": "DE",
+    "phone": "202-224-5042",
+    "address": "218 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001088_200.jpg"
+  },
+  "C001035": {
+    "bioguide": "C001035",
+    "first": "Susan M.",
+    "last": "Collins",
+    "party": "R",
+    "state": "ME",
+    "phone": "202-224-2523",
+    "address": "413 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001035_200.jpg"
+  },
+  "C001075": {
+    "bioguide": "C001075",
+    "first": "Bill",
+    "last": "Cassidy",
+    "party": "R",
+    "state": "LA",
+    "phone": "202-224-5824",
+    "address": "455 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001075_200.jpg"
+  },
+  "C001047": {
+    "bioguide": "C001047",
+    "first": "Shelley Moore",
+    "last": "Capito",
+    "party": "R",
+    "state": "WV",
+    "phone": "202-224-6472",
+    "address": "170 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c001047_200.jpg"
+  },
+  "C000127": {
+    "bioguide": "C000127",
+    "first": "Maria",
+    "last": "Cantwell",
+    "party": "D",
+    "state": "WA",
+    "phone": "202-224-3441",
+    "address": "511 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/c000127_200.jpg"
+  },
+  "B001305": {
+    "bioguide": "B001305",
+    "first": "Ted",
+    "last": "Budd",
+    "party": "R",
+    "state": "NC",
+    "phone": "202-224-3154",
+    "address": "354 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001305_200.jpg"
+  },
+  "B001319": {
+    "bioguide": "B001319",
+    "first": "Katie Boyd",
+    "last": "Britt",
+    "party": "R",
+    "state": "AL",
+    "phone": "202-224-5744",
+    "address": "416 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001319_200.jpg"
+  },
+  "B001236": {
+    "bioguide": "B001236",
+    "first": "John",
+    "last": "Boozman",
+    "party": "R",
+    "state": "AR",
+    "phone": "202-224-4843",
+    "address": "555 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001236_200.jpg"
+  },
+  "B001303": {
+    "bioguide": "B001303",
+    "first": "Lisa",
+    "last": "Blunt Rochester",
+    "party": "D",
+    "state": "DE",
+    "phone": "202-224-2441",
+    "address": "513 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001303_200.jpg"
+  },
+  "B001277": {
+    "bioguide": "B001277",
+    "first": "Richard",
+    "last": "Blumenthal",
+    "party": "D",
+    "state": "CT",
+    "phone": "202-224-2823",
+    "address": "503 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001277_200.jpg"
+  },
+  "B001243": {
+    "bioguide": "B001243",
+    "first": "Marsha",
+    "last": "Blackburn",
+    "party": "R",
+    "state": "TN",
+    "phone": "202-224-3344",
+    "address": "357 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001243_200.jpg"
+  },
+  "B001267": {
+    "bioguide": "B001267",
+    "first": "Michael F.",
+    "last": "Bennet",
+    "party": "D",
+    "state": "CO",
+    "phone": "202-224-5852",
+    "address": "261 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001267_200.jpg"
+  },
+  "B001261": {
+    "bioguide": "B001261",
+    "first": "John",
+    "last": "Barrasso",
+    "party": "R",
+    "state": "WY",
+    "phone": "202-224-6441",
+    "address": "307 Dirksen Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001261_200.jpg"
+  },
+  "B001299": {
+    "bioguide": "B001299",
+    "first": "Jim",
+    "last": "Banks",
+    "party": "R",
+    "state": "IN",
+    "phone": "202-224-4814",
+    "address": "303 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/677d83cbfdb6cf36bbb64998_200.jpg"
+  },
+  "B001230": {
+    "bioguide": "B001230",
+    "first": "Tammy",
+    "last": "Baldwin",
+    "party": "D",
+    "state": "WI",
+    "phone": "202-224-5653",
+    "address": "141 Hart Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/b001230_200.jpg"
+  },
+  "A000382": {
+    "bioguide": "A000382",
+    "first": "Angela D.",
+    "last": "Alsobrooks",
+    "party": "D",
+    "state": "MD",
+    "phone": "202-224-4524",
+    "address": "374 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "https://www.congress.gov/img/member/67acdbbf044eb506e25958f2_200.jpg"
+  }
+}
