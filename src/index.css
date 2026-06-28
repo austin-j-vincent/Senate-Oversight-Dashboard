@@ -55,6 +55,14 @@
   --glow-bottom:  rgba(80, 30, 20, 0.25);  /* radial gradient, bottom-right */
   --shadow-panel: rgba(0, 0, 0, 0.4);      /* open-panel drop shadow */
 
+  /* ============ Navigation (tab island + chamber switch) ============ */
+  --nav-island-top:    #cdac70;             /* raised gold (gradient top) */
+  --nav-island-bottom: #997b46;             /* bronze (gradient bottom) */
+  --nav-active:        var(--party-d);      /* selected tab / active chamber — dark blue */
+  --nav-active-fg:     var(--cream);        /* icon/text on the active (navy) fill */
+  --nav-inactive-fg:   var(--bg-navy);      /* icon/text on the gold fill */
+  --nav-inactive-bg:   rgba(0, 0, 0, 0.12); /* inactive button — slightly darker than island */
+
   /* ============ Layout ============ */
   --container:  1100px;
 
