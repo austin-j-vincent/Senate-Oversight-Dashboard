@@ -1,83 +1,13 @@
-import { useState, useMemo } from "react";
-import senators from "../data/senators.json";
+import { useState, useMemo, useEffect } from "react";
 import committees from "../data/committees.json";
 import meta from "../data/meta.json";
+import CopyButton from "../components/CopyButton";
+import FilterControls from "../components/FilterControls";
+import PartyLegend from "../components/PartyLegend";
+import { getSenatorInfo, partyColor, partyLabel } from "../lib/senators";
+import { formatDate } from "../lib/format";
 
-// Senators are keyed by bioguideId; committee rosters reference those ids.
-function getSenatorInfo(bioguide) {
-  return senators[bioguide] || null;
-}
-
-function partyColor(party) {
-  if (party === "R") return "var(--party-r)";
-  if (party === "D") return "var(--party-d)";
-  return "var(--party-i)";
-}
-
-function partyLabel(party, state) {
-  return `${party}-${state}`;
-}
-
-const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-function formatDate(iso) {
-  const [y, m, d] = String(iso || "").split("-").map(Number);
-  return y && m && d ? `${MONTHS[m - 1]} ${d}, ${y}` : (iso || "");
-}
-
-function CopyButton({ text, label }) {
-  const [copied, setCopied] = useState(false);
-  const markCopied = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
-  };
-  const handleCopy = () => {
-    // Prefer the async Clipboard API (secure contexts), fall back to a
-    // temporary textarea + execCommand for http / older browsers.
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(text).then(markCopied).catch(fallbackCopy);
-    } else {
-      fallbackCopy();
-    }
-  };
-  const fallbackCopy = () => {
-    try {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      markCopied();
-    } catch {
-      /* clipboard unavailable — leave the button in its default state */
-    }
-  };
-  return (
-    <button
-      onClick={handleCopy}
-      title={`Copy ${label}`}
-      style={{
-        background: copied ? "var(--success-bg)" : "var(--overlay-light)",
-        border: `1px solid ${copied ? "var(--success-border)" : "var(--border-gold)"}`,
-        borderRadius: "3px",
-        color: copied ? "var(--success)" : "var(--text-tertiary)",
-        fontSize: "10px",
-        padding: "2px 6px",
-        cursor: "pointer",
-        flexShrink: 0,
-        whiteSpace: "nowrap",
-        transition: "all 0.2s",
-        lineHeight: "1.4",
-      }}
-    >
-      {copied ? "✓ Copied" : "Copy"}
-    </button>
-  );
-}
-
-function SenatorRow({ bioguide }) {
+function SenatorRow({ bioguide, highlight }) {
   const info = getSenatorInfo(bioguide);
   if (!info) return null;
   const { first, last, party, state, phone, address } = info;
@@ -86,10 +16,15 @@ function SenatorRow({ bioguide }) {
   const color = partyColor(party);
 
   return (
-    <div style={{
+    <div data-bioguide={bioguide} style={{
       padding: "10px 16px",
       borderBottom: "1px solid var(--overlay-light)",
       fontSize: "13px",
+      // Highlight the senator we jumped in for ("who else is on this committee with them").
+      background: highlight ? "rgba(var(--border-gold-rgb), 0.14)" : "transparent",
+      boxShadow: highlight ? "inset 3px 0 0 var(--gold)" : "none",
+      scrollMarginTop: "80px",
+      transition: "background 0.3s",
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "5px" }}>
         <span style={{
@@ -129,13 +64,19 @@ function SenatorRow({ bioguide }) {
   );
 }
 
-function CommitteePanel({ committee, defaultOpen }) {
-  const [open, setOpen] = useState(defaultOpen || false);
+function CommitteePanel({ committee, forceOpen, highlightBioguide }) {
+  const [open, setOpen] = useState(false);
   const allMembers = [...committee.majority, ...committee.minority];
   const uniqueMembers = [...new Set(allMembers)];
 
+  // Open programmatically when this committee is the one requested via the URL
+  // (e.g. jumped here from a senator's card). Manual toggling still works afterward.
+  useEffect(() => {
+    if (forceOpen) setOpen(true);
+  }, [forceOpen]);
+
   return (
-    <div style={{
+    <div id={`committee-${committee.id}`} style={{
       marginBottom: "10px",
       border: "1px solid var(--border-gold)",
       borderRadius: "6px",
@@ -143,6 +84,7 @@ function CommitteePanel({ committee, defaultOpen }) {
       background: "var(--surface-panel)",
       boxShadow: open ? "0 4px 24px var(--shadow-panel)" : "none",
       transition: "box-shadow 0.3s",
+      scrollMarginTop: "72px",
     }}>
       <button
         onClick={() => setOpen(o => !o)}
@@ -196,9 +138,9 @@ function CommitteePanel({ committee, defaultOpen }) {
             <span style={{ color: "var(--text-tertiary)", fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase" }}>Phone · DC Mailing Address</span>
           </div>
           <div style={{ background: "var(--surface-rows)" }}>
-            {committee.majority.map(b => <SenatorRow key={`maj-${b}`} bioguide={b} />)}
+            {committee.majority.map(b => <SenatorRow key={`maj-${b}`} bioguide={b} highlight={b === highlightBioguide} />)}
             <div style={{ height: "1px", background: "var(--border-gold-faint)", margin: "2px 0" }} />
-            {committee.minority.map(b => <SenatorRow key={`min-${b}`} bioguide={b} />)}
+            {committee.minority.map(b => <SenatorRow key={`min-${b}`} bioguide={b} highlight={b === highlightBioguide} />)}
           </div>
         </div>
       )}
@@ -206,10 +148,32 @@ function CommitteePanel({ committee, defaultOpen }) {
   );
 }
 
-export default function CommitteesPage() {
+export default function CommitteesPage({ query = "", openCommittee = "", highlightWho = "", navigate = () => {} }) {
   const [search, setSearch] = useState("");
   const [filterParty, setFilterParty] = useState("all");
   const [filterState, setFilterState] = useState("");
+
+  // Apply an incoming senator filter from the URL (e.g. the group icon on a roster
+  // card) only when non-empty, so ordinary tab navigation never wipes the user's
+  // in-progress committee filter.
+  useEffect(() => {
+    if (query) setSearch(query);
+  }, [query]);
+
+  // Jumped in from a committee name on a senator's card: show that committee's FULL
+  // roster (clear filters), open it, and center + highlight the senator we came from
+  // — "who else is on this committee with them?". Keyed on `who` too so re-jumping
+  // for a different senator/committee re-centers.
+  useEffect(() => {
+    if (!highlightWho || !openCommittee) return;
+    setSearch(""); setFilterParty("all"); setFilterState("");
+    const t = setTimeout(() => {
+      const panel = document.getElementById(`committee-${openCommittee}`);
+      const row = panel?.querySelector(`[data-bioguide="${highlightWho}"]`);
+      (row || panel)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 140);
+    return () => clearTimeout(t);
+  }, [highlightWho, openCommittee]);
 
   const filtered = useMemo(() => {
     if (!search && filterParty === "all" && !filterState) return committees;
@@ -233,95 +197,18 @@ export default function CommitteesPage() {
     }).filter(Boolean);
   }, [search, filterParty, filterState]);
 
-  const allStates = useMemo(() => {
-    const states = new Set();
-    Object.values(senators).forEach(s => states.add(s.state));
-    return [...states].sort();
-  }, []);
-
   return (
     <>
       <main style={{ maxWidth: "var(--container)", margin: "0 auto", padding: "14px 16px 40px" }}>
 
-        {/* Filters */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", marginBottom: "10px" }}>
-          <input
-            type="text"
-            placeholder="Search senator or state…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={{
-              padding: "7px 12px",
-              background: "var(--overlay-light)",
-              border: "1px solid var(--border-gold-strong)",
-              borderRadius: "4px",
-              color: "var(--parchment)",
-              fontSize: "13px",
-              outline: "none",
-              flex: "1 1 140px",
-              minWidth: "120px",
-            }}
-          />
-          <select
-            value={filterParty}
-            onChange={e => setFilterParty(e.target.value)}
-            style={{
-              padding: "7px 10px",
-              background: "var(--surface-select)",
-              border: "1px solid var(--border-gold-strong)",
-              borderRadius: "4px",
-              color: "var(--parchment)",
-              fontSize: "13px",
-              cursor: "pointer",
-            }}
-          >
-            <option value="all">All Parties</option>
-            <option value="R">Republican</option>
-            <option value="D">Democrat</option>
-            <option value="I">Independent</option>
-          </select>
-          <select
-            value={filterState}
-            onChange={e => setFilterState(e.target.value)}
-            style={{
-              padding: "7px 10px",
-              background: "var(--surface-select)",
-              border: "1px solid var(--border-gold-strong)",
-              borderRadius: "4px",
-              color: "var(--parchment)",
-              fontSize: "13px",
-              cursor: "pointer",
-            }}
-          >
-            <option value="">All States</option>
-            {allStates.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-          {(search || filterParty !== "all" || filterState) && (
-            <button
-              onClick={() => { setSearch(""); setFilterParty("all"); setFilterState(""); }}
-              style={{
-                padding: "7px 10px",
-                background: "var(--danger-bg)",
-                border: "1px solid var(--danger-border)",
-                borderRadius: "4px",
-                color: "var(--danger)",
-                fontSize: "12px",
-                cursor: "pointer",
-              }}
-            >✕ Clear</button>
-          )}
-        </div>
-
-        {/* Legend */}
-        <div style={{ display: "flex", gap: "14px", flexWrap: "wrap", alignItems: "center", marginBottom: "12px" }}>
-          {[["R","var(--party-r)","Republican"],["D","var(--party-d)","Democrat"],["I","var(--party-i)","Independent"]].map(([party, color, label]) => (
-            <div key={party} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <span style={{ display: "inline-block", width: "26px", padding: "2px 0", textAlign: "center", background: color, color: "var(--cream)", fontSize: "11px", fontWeight: "700", borderRadius: "3px" }}>{party}</span>
-              <span style={{ color: "var(--text-muted)", fontSize: "12px" }}>{label}</span>
-            </div>
-          ))}
-          <span style={{ color: "var(--text-faint)", fontSize: "11px", marginLeft: "auto" }}>Majority first · tap to expand</span>
-        </div>
+        <FilterControls
+          search={search} setSearch={setSearch}
+          filterParty={filterParty} setFilterParty={setFilterParty}
+          filterState={filterState} setFilterState={setFilterState}
+          extraActive={!!highlightWho}
+          onClear={() => navigate("senate", "committees")}
+        />
+        <PartyLegend hint="Majority first · tap to expand" />
 
         {filtered.length === 0 ? (
           <div style={{ textAlign: "center", padding: "60px 0", color: "var(--text-faint)" }}>
@@ -329,7 +216,12 @@ export default function CommitteesPage() {
           </div>
         ) : (
           filtered.map(c => (
-            <CommitteePanel key={c.id} committee={c} defaultOpen={false} />
+            <CommitteePanel
+              key={c.id}
+              committee={c}
+              forceOpen={!!openCommittee && openCommittee === c.id}
+              highlightBioguide={openCommittee === c.id ? highlightWho : ""}
+            />
           ))
         )}
       </main>

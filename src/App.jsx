@@ -3,9 +3,20 @@ import ChamberSwitch from "./components/ChamberSwitch";
 import TabBar from "./components/TabBar";
 import UnderConstruction from "./components/UnderConstruction";
 import CommitteesPage from "./pages/CommitteesPage";
+import RosterPage from "./pages/RosterPage";
 
 export default function App() {
-  const { chamber, tab, navigate } = useHashRoute();
+  const { chamber, tab, detail, query, committee, who, navigate } = useHashRoute();
+
+  // The two built Senate pages; every other chamber/tab is a placeholder. Pages stay
+  // mounted (hidden via display:none) so their filter/scroll state survives navigation.
+  const showCommittees = chamber === "senate" && tab === "committees";
+  const showRoster = chamber === "senate" && tab === "roster";
+  const showUnderConstruction = !showCommittees && !showRoster;
+
+  const title = showRoster
+    ? "Senate Roster"
+    : `${CHAMBER_LABELS[chamber]} Oversight Contact Directory`;
 
   return (
     <div style={{
@@ -43,7 +54,7 @@ export default function App() {
               fontWeight: "700",
               lineHeight: 1.2,
             }}>
-              {CHAMBER_LABELS[chamber]} Oversight Contact Directory
+              {title}
             </h1>
           </div>
           <ChamberSwitch chamber={chamber} onChange={(c) => navigate(c, tab)} />
@@ -51,13 +62,16 @@ export default function App() {
       </header>
 
       {/* Routed content + bottom runway so the fixed TabBar always lands in dead space.
-          CommitteesPage stays mounted (hidden via display:none) so filter state and
-          open panels survive tab and chamber switches. */}
+          Built pages stay mounted (hidden via display:none) so filter state, open panels,
+          and scroll position survive tab and chamber switches. */}
       <div style={{ paddingBottom: "calc(110px + env(safe-area-inset-bottom))" }}>
-        <div style={{ display: chamber === "senate" && tab === "committees" ? "" : "none" }}>
-          <CommitteesPage />
+        <div style={{ display: showCommittees ? "" : "none" }}>
+          <CommitteesPage query={query} openCommittee={committee} highlightWho={who} navigate={navigate} />
         </div>
-        {(chamber !== "senate" || tab !== "committees") && (
+        <div style={{ display: showRoster ? "" : "none" }}>
+          <RosterPage detail={detail} navigate={navigate} />
+        </div>
+        {showUnderConstruction && (
           <UnderConstruction label={`${CHAMBER_LABELS[chamber]} · ${TAB_LABELS[tab]}`} />
         )}
       </div>
