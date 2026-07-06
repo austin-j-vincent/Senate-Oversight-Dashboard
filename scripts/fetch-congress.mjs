@@ -3,10 +3,12 @@
 // (build env), never shipped to the browser. Run with: npm run fetch-data
 //
 // Sources:
-//   - Members (roster, party, state, phone, DC office address, photo):
-//       Congress.gov API  /member/congress/119  +  /member/{bioguideId}
+//   - Members (roster, party, state, phone, DC office address, photo, official website,
+//       leadership role): Congress.gov API  /member/congress/119  +  /member/{bioguideId}
 //   - Committee rosters (majority/minority) — the Congress API has NO roster data,
 //       so this comes from theunitedstates/congress-legislators (bioguideId-keyed).
+//   - Senate class + next-election year: congress-legislators legislators-current.yaml
+//       (the API terms carry neither class nor the term end year).
 //
 // Resilient by design: on any failure it leaves the committed JSON untouched so the
 // build still succeeds with last-known-good data.
@@ -23,6 +25,8 @@ const KEY = process.env.CONGRESS_API_KEY;
 const CONGRESS = 119;
 const MEMBERSHIP_URL =
   "https://raw.githubusercontent.com/unitedstates/congress-legislators/main/committee-membership-current.yaml";
+const LEGISLATORS_URL =
+  "https://raw.githubusercontent.com/unitedstates/congress-legislators/main/legislators-current.yaml";
 
 // Senate committee code -> app slug + display name, in the order the UI lists them.
 const COMMITTEES = [
@@ -84,7 +88,35 @@ function composeAddress(a) {
   return `${building}, ${city} ${dist} ${zip}`.trim();
 }
 
-async function fetchSenators() {
+// bioguide -> { class, nextElection } from each senator's current term. Resilient:
+// returns {} on failure so applyFallback can restore last-known-good values.
+async function fetchClassMap() {
+  try {
+    const res = await fetch(LEGISLATORS_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status} for legislators YAML`);
+    const people = yamlLoad(await res.text());
+    const map = {};
+    for (const p of people) {
+      const bio = p.id?.bioguide;
+      const term = p.terms?.[p.terms.length - 1];
+      if (!bio || term?.type !== "sen") continue;
+      // Regular terms end early January, so the seat was last/next contested the prior
+      // November (end 2027-01-03 -> 2026). Appointed senators' terms instead end ON their
+      // special-election day in November (end 2026-11-03 -> up that same year, 2026).
+      const end = String(term.end || "");
+      const endYear = Number(end.slice(0, 4));
+      const endMonth = Number(end.slice(5, 7));
+      const nextElection = endYear ? (endMonth <= 6 ? endYear - 1 : endYear) : null;
+      map[bio] = { class: term.class || null, nextElection };
+    }
+    return map;
+  } catch (e) {
+    console.warn(`[fetch-congress] class map unavailable: ${e.message}`);
+    return {};
+  }
+}
+
+async function fetchSenators(classMap) {
   const members = [];
   for (let offset = 0; ; offset += 250) {
     const j = await getJSON(
@@ -116,6 +148,11 @@ async function fetchSenators() {
         let imageUrl = m.depiction?.imageUrl || "";
         const nested = imageUrl.lastIndexOf("https://");
         if (nested > 0) imageUrl = imageUrl.slice(nested);
+        // Current leadership title, if any (e.g. "Majority Leader"); null for most.
+        const leadEntry = Array.isArray(m.leadership)
+          ? (m.leadership.find((l) => l.current) || m.leadership.find((l) => l.congress === CONGRESS))
+          : null;
+        const cls = classMap[s.bioguideId] || {};
         return {
           bioguide: s.bioguideId,
           first,
@@ -125,6 +162,10 @@ async function fetchSenators() {
           phone: normPhone(m.addressInformation?.phoneNumber),
           address: composeAddress(m.addressInformation),
           imageUrl,
+          website: m.officialWebsiteUrl || "",
+          leadership: leadEntry?.type || null,
+          class: cls.class ?? null,
+          nextElection: cls.nextElection ?? null,
         };
       })
     );
@@ -155,7 +196,9 @@ function applyFallback(fresh, prev) {
   for (const rec of Object.values(fresh)) {
     const p = prev[rec.bioguide];
     if (!p) continue;
-    for (const k of ["first", "last", "party", "state", "phone", "address", "imageUrl"]) {
+    // NOTE: `leadership` is intentionally excluded — null means "no current role" and
+    // must not be restored from stale data if a senator steps down mid-cycle.
+    for (const k of ["first", "last", "party", "state", "phone", "address", "imageUrl", "website", "class", "nextElection"]) {
       if (!rec[k] && p[k]) rec[k] = p[k];
     }
   }
@@ -171,7 +214,8 @@ async function main() {
   const senPath = join(dataDir, "senators.json");
   const prev = existsSync(senPath) ? JSON.parse(await readFile(senPath, "utf8")) : null;
 
-  const senators = applyFallback(await fetchSenators(), prev);
+  const classMap = await fetchClassMap();
+  const senators = applyFallback(await fetchSenators(classMap), prev);
   const committees = await fetchCommittees();
 
   const n = Object.keys(senators).length;
