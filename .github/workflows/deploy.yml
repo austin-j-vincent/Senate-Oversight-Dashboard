@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      allow_roster_drop:
+        description: "Accept a senator-count drop of 4+ (real vacancies, not a truncated fetch)"
+        type: boolean
+        default: false
   schedule:
     # Twice-weekly auto-refresh of Congress data (Mon + Thu).
     # :17 rather than :00 — top-of-hour crons are heavily queued; this repo's
@@ -56,6 +61,11 @@ jobs:
         run: npm run fetch-data
         env:
           CONGRESS_API_KEY: ${{ secrets.CONGRESS_API_KEY }}
+          # Empty on schedule/push (no inputs context) — the guard stays armed unless a
+          # human explicitly ticks the box on a manual run. Without this wiring the
+          # escape hatch would exist only for local runs, and a real 4+ vacancy drop
+          # could only be cleared by editing this file.
+          ALLOW_ROSTER_DROP: ${{ inputs.allow_roster_drop && '1' || '' }}
 
       # Must run BEFORE the build: discarding the meta.json restamp has to happen
       # while it can still affect what gets bundled.

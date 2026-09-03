@@ -190,6 +190,13 @@ async function fetchCommittees() {
   });
 }
 
+// Surface a warning as a GitHub Actions annotation when running in CI, so a degraded-but-
+// successful run is visible on the run summary instead of buried in the step log. No-op
+// locally. Newlines would break the annotation format, so flatten them.
+function annotate(title, message) {
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning title=${title}::${String(message).replace(/\s*\n\s*/g, " ")}`);
+}
+
 // Keep last-known-good values for any field the API left empty.
 function applyFallback(fresh, prev) {
   if (!prev) return fresh;
@@ -266,9 +273,14 @@ async function main() {
       if (p?.majority?.length || p?.minority?.length) {
         c.majority = p.majority ?? [];
         c.minority = p.minority ?? [];
+        // A frozen roster produces byte-identical output forever: nothing to commit, a
+        // green job, and a "Last Updated" date that keeps advancing over stale members.
+        // console.warn alone would bury that in the log, so raise a real annotation.
         console.warn(`[fetch-congress] ${c.id}: empty upstream roster — kept last-known-good`);
+        annotate(`Committee roster frozen`, `${c.id} came back empty upstream; serving last-known-good members. Check whether its code in COMMITTEES was renamed or retired.`);
       } else {
         console.warn(`[fetch-congress] ${c.id}: empty upstream roster and no fallback available`);
+        annotate(`Committee roster empty`, `${c.id} came back empty upstream with no last-known-good to fall back on.`);
       }
     }
   }
@@ -283,7 +295,12 @@ async function main() {
   // Sort by bioguide before writing. JSON.stringify follows insertion order, which here
   // is whatever order the API paginated members in — if that ever shifts, every run would
   // produce a whole-file reorder diff and CI would commit + redeploy on every schedule.
-  const sorted = Object.fromEntries(Object.entries(senators).sort(([a], [b]) => a.localeCompare(b)));
+  // Codepoint comparison, not localeCompare — the whole point is byte-stable output, and
+  // localeCompare's ordering is locale/ICU-dependent. Moot for [A-Z]\d{6} bioguide ids
+  // today, but this makes the determinism an actual guarantee rather than a coincidence.
+  const sorted = Object.fromEntries(
+    Object.entries(senators).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+  );
   await writeFile(senPath, JSON.stringify(sorted, null, 2) + "\n");
   await writeFile(cmPath, JSON.stringify(committees, null, 2) + "\n");
   await writeFile(join(dataDir, "meta.json"), JSON.stringify({ lastUpdated }, null, 2) + "\n");
