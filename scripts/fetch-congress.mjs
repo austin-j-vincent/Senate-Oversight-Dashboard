@@ -208,6 +208,7 @@ function applyFallback(fresh, prev) {
 async function main() {
   if (!KEY) {
     console.warn("[fetch-congress] CONGRESS_API_KEY not set — keeping existing committed data.");
+    process.exitCode = 1;
     return;
   }
   await mkdir(dataDir, { recursive: true });
@@ -218,8 +219,29 @@ async function main() {
   const senators = applyFallback(await fetchSenators(classMap), prev);
   const committees = await fetchCommittees();
 
+  // Sanity guards. These all throw BEFORE any write, so committed data survives a bad
+  // fetch. That matters more than it used to: CI now commits this output back to main,
+  // so anything written here becomes the new last-known-good and there is no recovering
+  // the old values on the next run.
   const n = Object.keys(senators).length;
   if (n < 90) throw new Error(`only ${n} senators fetched — aborting to protect committed data`);
+
+  // A flat floor can't catch losing a handful of records to a truncated pagination
+  // response, and applyFallback only restores empty FIELDS — it cannot resurrect a
+  // record that's missing entirely. So also require the count not to drop sharply.
+  const prevN = prev ? Object.keys(prev).length : 0;
+  if (prevN && n < prevN - 3)
+    throw new Error(`senator count fell ${prevN} → ${n} — aborting to protect committed data`);
+
+  // An empty roster means the upstream YAML changed shape (a 200 with the wrong schema
+  // still parses). Committees always have members, so treat this as a failed fetch
+  // rather than warning and shipping blank rosters. Unlike senators, there is no
+  // per-field fallback for committees at all.
+  const empty = committees.filter((c) => !c.majority.length && !c.minority.length);
+  if (empty.length)
+    throw new Error(
+      `${empty.length} committee(s) with no members (${empty.map((c) => c.id).join(", ")}) — aborting to protect committed data`
+    );
 
   // Flag any committee member missing from the senator set (renders as nothing in the UI).
   const known = new Set(Object.keys(senators));
@@ -239,6 +261,10 @@ async function main() {
 }
 
 main().catch((e) => {
-  // Never break the build — fall back to committed JSON.
+  // Exit non-zero so CI can distinguish "upstream unchanged" from "fetch broke" — the
+  // two look identical from the committed files alone. This does NOT break the build:
+  // deploy.yml marks this step continue-on-error and reads steps.fetch.outcome, so a
+  // failure surfaces as a warning and the build proceeds on committed JSON.
   console.error("[fetch-congress] failed:", e.message);
+  process.exitCode = 1;
 });
