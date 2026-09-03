@@ -4,13 +4,22 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      allow_roster_drop:
+        description: "Accept a senator-count drop of 4+ (real vacancies, not a truncated fetch)"
+        type: boolean
+        default: false
   schedule:
-    # Weekly auto-refresh of Congress data (Mondays 08:00 UTC)
-    - cron: "0 8 * * 1"
+    # Twice-weekly auto-refresh of Congress data (Mon + Thu).
+    # :17 rather than :00 — top-of-hour crons are heavily queued; this repo's
+    # 08:00 Monday runs have started as late as 16:01 UTC.
+    - cron: "17 8 * * 1,4"
 
-# Allow the GITHUB_TOKEN to deploy to Pages
+# contents: write — the build job commits refreshed data back to main. That commit
+# is also what keeps the repo "active": GitHub disables scheduled workflows in public
+# repos after 60 days of inactivity, which is what silently killed this cron before.
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -19,26 +28,158 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  # Push an empty commit if main has been idle this long, so a quiet stretch in
+  # Congress can't let the 60-day inactivity timer run out.
+  KEEPALIVE_MAX_AGE_DAYS: 30
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          # Full history: the push-retry rebase and the commit-age check both
+          # misbehave on a shallow clone. The repo is tiny, so this is free.
+          # persist-credentials stays at its default true — that's what puts
+          # GITHUB_TOKEN in .git/config and makes the push below work.
+          fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
       - run: npm ci
       # Refresh data from the Congress API (key from repo secret; never in the bundle).
-      # Resilient: if this fails, the committed JSON is used and the build still succeeds.
-      - run: npm run fetch-data
+      # continue-on-error keeps the old contract — a failed fetch never breaks the build,
+      # the committed JSON is used instead — while still recording a real pass/fail in
+      # steps.fetch.outcome. The script exits non-zero on any failure precisely so this
+      # is distinguishable from "upstream had no changes"; the two are identical from
+      # the committed files alone. The step also shows yellow in the Actions UI.
+      - name: Fetch Congress data
+        id: fetch
+        continue-on-error: true
+        run: npm run fetch-data
         env:
           CONGRESS_API_KEY: ${{ secrets.CONGRESS_API_KEY }}
+          # Empty on schedule/push (no inputs context) — the guard stays armed unless a
+          # human explicitly ticks the box on a manual run. Without this wiring the
+          # escape hatch would exist only for local runs, and a real 4+ vacancy drop
+          # could only be cleared by editing this file.
+          ALLOW_ROSTER_DROP: ${{ inputs.allow_roster_drop && '1' || '' }}
+
+      # Must run BEFORE the build: discarding the meta.json restamp has to happen
+      # while it can still affect what gets bundled.
+      - name: Detect data changes
+        id: detect
+        env:
+          FETCH_OUTCOME: ${{ steps.fetch.outcome }}
+        run: |
+          set -euo pipefail
+          git update-index -q --refresh || true
+
+          # A failed fetch means whatever is on disk is untrustworthy — possibly a tree
+          # half-written before the error. Refuse to commit it as last-known-good; the
+          # build still proceeds on whatever is there, but nothing gets persisted.
+          if [ "$FETCH_OUTCOME" != "success" ]; then
+            echo "::warning title=Data fetch failed::fetch-data exited non-zero (API failure, missing key, or a sanity guard tripped). Building from committed data, not committing — check the Fetch step's log."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            git checkout -- src/data/ || true
+            exit 0
+          fi
+
+          # git diff --quiet: 0 = identical, 1 = differs. It sits in an `if` condition
+          # because that suspends set -e; a bare call returning 1 would kill the step.
+          # The explicit HEAD matters: the bare form compares against the index, which
+          # would silently report "no change" if anything staged files earlier.
+          if git diff --quiet HEAD -- src/data/senators.json src/data/committees.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No senator/committee changes."
+            # Drop the restamp so the repo and the deployed bundle stay identical —
+            # lastUpdated means "date the data changed", not "date we last checked".
+            git checkout -- src/data/meta.json
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git --no-pager diff --stat HEAD -- src/data/senators.json src/data/committees.json
+          fi
+
       - run: npm run build
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
+
+      # Last step on purpose: the Pages artifact is already uploaded, so nothing here
+      # can block the deploy. Every failure path degrades to a warning.
+      #
+      # The ref guard is load-bearing, not defensive dressing: workflow_dispatch can be
+      # run from ANY branch, and this step ends in `git push origin HEAD:main`. Without
+      # it, "Run workflow" on a feature branch would push that entire branch onto main —
+      # a silent merge with no review. schedule and push:[main] are already main-only.
+      #
+      # Note this is NOT also gated on the fetch succeeding: the keepalive has to run even
+      # when the API is broken, or a dead key would stop the commits that keep the cron
+      # alive and the workflow would be disabled at 60 days anyway. A failed fetch instead
+      # forces changed=false in the detect step, so it falls through to the keepalive path.
+      - name: Commit data or keepalive
+        if: github.ref == 'refs/heads/main'
+        env:
+          DATA_CHANGED: ${{ steps.detect.outputs.changed }}
+          MAX_AGE_DAYS: ${{ env.KEEPALIVE_MAX_AGE_DAYS }}
+        run: |
+          set -uo pipefail  # NOT -e: a rejected push is an expected, handled outcome
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          push_with_retry() {
+            for attempt in 1 2 3; do
+              git push origin HEAD:main && return 0
+              echo "push rejected (attempt ${attempt}/3) — rebasing onto origin/main"
+              sleep $(( attempt * 5 ))
+              git fetch origin main || return 1
+              # Rebase, never force: a concurrent human push is replayed under ours.
+              # A real conflict aborts and skips the push; the next run recomputes.
+              # FETCH_HEAD, not origin/main — the latter assumes remote.origin.fetch maps
+              # the branch into refs/remotes, and if it doesn't the rebase silently no-ops
+              # and all three retries fail on the same non-fast-forward.
+              git rebase FETCH_HEAD || { git rebase --abort >/dev/null 2>&1 || true; return 1; }
+            done
+            return 1
+          }
+
+          # Every commit below is `|| { warn; exit 0; }` — without set -e, a failed commit
+          # would otherwise fall through and "successfully" push a no-op.
+          if [ "$DATA_CHANGED" = "true" ]; then
+            # Explicit paths, never -A, so a .gitignore regression can't sweep dist/ in.
+            git add src/data/senators.json src/data/committees.json src/data/meta.json
+            git commit -m "chore(data): refresh Congress data ($(date -u +%F))" || {
+              echo "::warning title=Commit failed::git commit failed; nothing pushed. Deploy continues."
+              exit 0
+            }
+            reason="data refresh"
+          else
+            age_days=$(( ( $(date -u +%s) - $(git log -1 --format=%ct) ) / 86400 ))
+            echo "main tip committed $(git log -1 --format=%cI) — ${age_days}d ago"
+            if [ "$age_days" -lt "$MAX_AGE_DAYS" ]; then
+              echo "No data change; repo active (${age_days}d < ${MAX_AGE_DAYS}d). Nothing to push."
+              echo "No data change — last commit ${age_days}d ago." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            # Empty commit: can't change a content hash, so it never republishes the site.
+            git commit --allow-empty -m "chore: keepalive — keep the scheduled workflow enabled" || {
+              echo "::warning title=Keepalive commit failed::git commit failed; nothing pushed. Deploy continues."
+              exit 0
+            }
+            reason="keepalive (main idle ${age_days}d)"
+          fi
+
+          if push_with_retry; then
+            echo "Pushed: ${reason}"
+            echo "Pushed to main: ${reason}." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning title=Push failed::Could not push (${reason}). Deploy continues; the next run retries."
+            echo "Push FAILED (${reason}) — deploy proceeded anyway." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
   deploy:
     needs: build

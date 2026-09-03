@@ -190,6 +190,13 @@ async function fetchCommittees() {
   });
 }
 
+// Surface a warning as a GitHub Actions annotation when running in CI, so a degraded-but-
+// successful run is visible on the run summary instead of buried in the step log. No-op
+// locally. Newlines would break the annotation format, so flatten them.
+function annotate(title, message) {
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning title=${title}::${String(message).replace(/\s*\n\s*/g, " ")}`);
+}
+
 // Keep last-known-good values for any field the API left empty.
 function applyFallback(fresh, prev) {
   if (!prev) return fresh;
@@ -208,18 +215,75 @@ function applyFallback(fresh, prev) {
 async function main() {
   if (!KEY) {
     console.warn("[fetch-congress] CONGRESS_API_KEY not set — keeping existing committed data.");
+    process.exitCode = 1;
     return;
   }
   await mkdir(dataDir, { recursive: true });
   const senPath = join(dataDir, "senators.json");
+  const cmPath = join(dataDir, "committees.json");
   const prev = existsSync(senPath) ? JSON.parse(await readFile(senPath, "utf8")) : null;
+  const prevCommittees = existsSync(cmPath) ? JSON.parse(await readFile(cmPath, "utf8")) : null;
 
   const classMap = await fetchClassMap();
   const senators = applyFallback(await fetchSenators(classMap), prev);
   const committees = await fetchCommittees();
 
+  // Sanity guards. These all throw BEFORE any write, so committed data survives a bad
+  // fetch. That matters more than it used to: CI now commits this output back to main,
+  // so anything written here becomes the new last-known-good and there is no recovering
+  // the old values on the next run.
   const n = Object.keys(senators).length;
   if (n < 90) throw new Error(`only ${n} senators fetched — aborting to protect committed data`);
+
+  // A flat floor can't catch losing a handful of records to a truncated pagination
+  // response, and applyFallback only restores empty FIELDS — it cannot resurrect a
+  // record that's missing entirely. So also require the count not to drop sharply.
+  //
+  // This compares against the count CI itself commits back, so a GENUINE drop of 4+
+  // (an unusual run of vacancies) would otherwise wedge every future run permanently —
+  // the baseline can never move down past its own guard. ALLOW_ROSTER_DROP=1 is the
+  // escape hatch; the error says so, because whoever hits this will be reading it.
+  const prevN = prev ? Object.keys(prev).length : 0;
+  if (prevN && n < prevN - 3 && process.env.ALLOW_ROSTER_DROP !== "1")
+    throw new Error(
+      `senator count fell ${prevN} → ${n} — aborting to protect committed data. ` +
+        `If this drop is real (vacancies, not a truncated fetch), re-run with ALLOW_ROSTER_DROP=1 to accept it.`
+    );
+
+  // Empty rosters mean the upstream YAML didn't have what we expected (a 200 with a
+  // changed schema still parses fine). Distinguish the two shapes of that:
+  //   - EVERY committee empty  -> the schema itself broke; abort, protect committed data.
+  //   - a few empty            -> more likely a renamed/retired code in COMMITTEES, which
+  //                               the pre-existing warn at fetchCommittees() anticipates.
+  //                               Aborting the whole run for that would silently freeze
+  //                               the senator refresh too, so keep last-known-good for
+  //                               just those committees — the same philosophy as
+  //                               applyFallback(), which committees otherwise lack.
+  const empty = committees.filter((c) => !c.majority.length && !c.minority.length);
+  if (empty.length === committees.length)
+    throw new Error(
+      `all ${committees.length} committee rosters came back empty — upstream schema likely changed; aborting to protect committed data`
+    );
+  if (empty.length && prevCommittees) {
+    const prevById = new Map(prevCommittees.map((c) => [c.id, c]));
+    for (const c of empty) {
+      const p = prevById.get(c.id);
+      // Optional-chain every hop: a prior entry missing majority/minority would
+      // otherwise throw a TypeError inside the fallback meant to survive that break.
+      if (p?.majority?.length || p?.minority?.length) {
+        c.majority = p.majority ?? [];
+        c.minority = p.minority ?? [];
+        // A frozen roster produces byte-identical output forever: nothing to commit, a
+        // green job, and a "Last Updated" date that keeps advancing over stale members.
+        // console.warn alone would bury that in the log, so raise a real annotation.
+        console.warn(`[fetch-congress] ${c.id}: empty upstream roster — kept last-known-good`);
+        annotate(`Committee roster frozen`, `${c.id} came back empty upstream; serving last-known-good members. Check whether its code in COMMITTEES was renamed or retired.`);
+      } else {
+        console.warn(`[fetch-congress] ${c.id}: empty upstream roster and no fallback available`);
+        annotate(`Committee roster empty`, `${c.id} came back empty upstream with no last-known-good to fall back on.`);
+      }
+    }
+  }
 
   // Flag any committee member missing from the senator set (renders as nothing in the UI).
   const known = new Set(Object.keys(senators));
@@ -228,13 +292,26 @@ async function main() {
       if (!known.has(b)) console.warn(`[fetch-congress] ${c.id}: member ${b} not in senator set`);
 
   const lastUpdated = new Date().toISOString().slice(0, 10);
-  await writeFile(senPath, JSON.stringify(senators, null, 2) + "\n");
-  await writeFile(join(dataDir, "committees.json"), JSON.stringify(committees, null, 2) + "\n");
+  // Sort by bioguide before writing. JSON.stringify follows insertion order, which here
+  // is whatever order the API paginated members in — if that ever shifts, every run would
+  // produce a whole-file reorder diff and CI would commit + redeploy on every schedule.
+  // Codepoint comparison, not localeCompare — the whole point is byte-stable output, and
+  // localeCompare's ordering is locale/ICU-dependent. Moot for [A-Z]\d{6} bioguide ids
+  // today, but this makes the determinism an actual guarantee rather than a coincidence.
+  const sorted = Object.fromEntries(
+    Object.entries(senators).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+  );
+  await writeFile(senPath, JSON.stringify(sorted, null, 2) + "\n");
+  await writeFile(cmPath, JSON.stringify(committees, null, 2) + "\n");
   await writeFile(join(dataDir, "meta.json"), JSON.stringify({ lastUpdated }, null, 2) + "\n");
   console.log(`[fetch-congress] wrote ${n} senators, ${committees.length} committees (lastUpdated ${lastUpdated}).`);
 }
 
 main().catch((e) => {
-  // Never break the build — fall back to committed JSON.
+  // Exit non-zero so CI can distinguish "upstream unchanged" from "fetch broke" — the
+  // two look identical from the committed files alone. This does NOT break the build:
+  // deploy.yml marks this step continue-on-error and reads steps.fetch.outcome, so a
+  // failure surfaces as a warning and the build proceeds on committed JSON.
   console.error("[fetch-congress] failed:", e.message);
+  process.exitCode = 1;
 });
