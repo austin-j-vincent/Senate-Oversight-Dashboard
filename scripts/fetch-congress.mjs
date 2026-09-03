@@ -231,9 +231,17 @@ async function main() {
   // A flat floor can't catch losing a handful of records to a truncated pagination
   // response, and applyFallback only restores empty FIELDS — it cannot resurrect a
   // record that's missing entirely. So also require the count not to drop sharply.
+  //
+  // This compares against the count CI itself commits back, so a GENUINE drop of 4+
+  // (an unusual run of vacancies) would otherwise wedge every future run permanently —
+  // the baseline can never move down past its own guard. ALLOW_ROSTER_DROP=1 is the
+  // escape hatch; the error says so, because whoever hits this will be reading it.
   const prevN = prev ? Object.keys(prev).length : 0;
-  if (prevN && n < prevN - 3)
-    throw new Error(`senator count fell ${prevN} → ${n} — aborting to protect committed data`);
+  if (prevN && n < prevN - 3 && process.env.ALLOW_ROSTER_DROP !== "1")
+    throw new Error(
+      `senator count fell ${prevN} → ${n} — aborting to protect committed data. ` +
+        `If this drop is real (vacancies, not a truncated fetch), re-run with ALLOW_ROSTER_DROP=1 to accept it.`
+    );
 
   // Empty rosters mean the upstream YAML didn't have what we expected (a 200 with a
   // changed schema still parses fine). Distinguish the two shapes of that:
@@ -253,9 +261,11 @@ async function main() {
     const prevById = new Map(prevCommittees.map((c) => [c.id, c]));
     for (const c of empty) {
       const p = prevById.get(c.id);
-      if (p?.majority.length || p?.minority.length) {
-        c.majority = p.majority;
-        c.minority = p.minority;
+      // Optional-chain every hop: a prior entry missing majority/minority would
+      // otherwise throw a TypeError inside the fallback meant to survive that break.
+      if (p?.majority?.length || p?.minority?.length) {
+        c.majority = p.majority ?? [];
+        c.minority = p.minority ?? [];
         console.warn(`[fetch-congress] ${c.id}: empty upstream roster — kept last-known-good`);
       } else {
         console.warn(`[fetch-congress] ${c.id}: empty upstream roster and no fallback available`);

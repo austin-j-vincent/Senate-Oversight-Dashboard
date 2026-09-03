@@ -129,7 +129,10 @@ jobs:
               git fetch origin main || return 1
               # Rebase, never force: a concurrent human push is replayed under ours.
               # A real conflict aborts and skips the push; the next run recomputes.
-              git rebase origin/main || { git rebase --abort >/dev/null 2>&1 || true; return 1; }
+              # FETCH_HEAD, not origin/main — the latter assumes remote.origin.fetch maps
+              # the branch into refs/remotes, and if it doesn't the rebase silently no-ops
+              # and all three retries fail on the same non-fast-forward.
+              git rebase FETCH_HEAD || { git rebase --abort >/dev/null 2>&1 || true; return 1; }
             done
             return 1
           }
