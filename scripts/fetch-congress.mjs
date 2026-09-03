@@ -228,7 +228,11 @@ async function main() {
       if (!known.has(b)) console.warn(`[fetch-congress] ${c.id}: member ${b} not in senator set`);
 
   const lastUpdated = new Date().toISOString().slice(0, 10);
-  await writeFile(senPath, JSON.stringify(senators, null, 2) + "\n");
+  // Sort by bioguide before writing. JSON.stringify follows insertion order, which here
+  // is whatever order the API paginated members in — if that ever shifts, every run would
+  // produce a whole-file reorder diff and CI would commit + redeploy on every schedule.
+  const sorted = Object.fromEntries(Object.entries(senators).sort(([a], [b]) => a.localeCompare(b)));
+  await writeFile(senPath, JSON.stringify(sorted, null, 2) + "\n");
   await writeFile(join(dataDir, "committees.json"), JSON.stringify(committees, null, 2) + "\n");
   await writeFile(join(dataDir, "meta.json"), JSON.stringify({ lastUpdated }, null, 2) + "\n");
   console.log(`[fetch-congress] wrote ${n} senators, ${committees.length} committees (lastUpdated ${lastUpdated}).`);
