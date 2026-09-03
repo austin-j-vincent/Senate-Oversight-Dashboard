@@ -433,20 +433,6 @@
     "class": 3,
     "nextElection": 2028
   },
-  "G000359": {
-    "bioguide": "G000359",
-    "first": "Lindsey",
-    "last": "Graham",
-    "party": "R",
-    "state": "SC",
-    "phone": "202-224-5972",
-    "address": "211 Russell Senate Office Building, Washington DC 20510",
-    "imageUrl": "https://www.congress.gov/img/member/g000359_200.jpg",
-    "website": "https://www.lgraham.senate.gov/",
-    "leadership": null,
-    "class": 2,
-    "nextElection": 2026
-  },
   "G000386": {
     "bioguide": "G000386",
     "first": "Chuck",
@@ -455,7 +441,7 @@
     "state": "IA",
     "phone": "202-224-3744",
     "address": "135 Hart Senate Office Building, Washington DC 20510",
-    "imageUrl": "https://www.congress.gov/img/member/g000386_200.jpg",
+    "imageUrl": "https://www.congress.gov/img/member/b5b30dc4407d5ae57f15105d15cfec1e_200.jpg",
     "website": "https://www.grassley.senate.gov",
     "leadership": "President Pro Tempore",
     "class": 3,
@@ -488,6 +474,20 @@
     "leadership": null,
     "class": 1,
     "nextElection": 2030
+  },
+  "G000608": {
+    "bioguide": "G000608",
+    "first": "Darline",
+    "last": "Graham",
+    "party": "R",
+    "state": "SC",
+    "phone": "202-224-5972",
+    "address": "211 Russell Senate Office Building, Washington DC 20510",
+    "imageUrl": "",
+    "website": "https://www.dgraham.senate.gov/",
+    "leadership": null,
+    "class": 2,
+    "nextElection": 2026
   },
   "H000273": {
     "bioguide": "H000273",
@@ -623,7 +623,7 @@
     "state": "WI",
     "phone": "202-224-5323",
     "address": "328 Hart Senate Office Building, Washington DC 20510",
-    "imageUrl": "https://www.congress.gov/img/member/j000293_200.jpg",
+    "imageUrl": "https://www.congress.gov/img/member/d522c3b291177f5fea1f3259232301ee_200.jpg",
     "website": "https://www.ronjohnson.senate.gov/",
     "leadership": null,
     "class": 3,
@@ -931,7 +931,7 @@
     "state": "FL",
     "phone": "202-224-3041",
     "address": "387 Russell Senate Office Building, Washington DC 20510",
-    "imageUrl": "https://bioguide.congress.gov/photo/695d82c8550dfb80c3063bee.jpg",
+    "imageUrl": "https://www.congress.gov/img/member/695d82c8550dfb80c3063bee_200.jpg",
     "website": "https://www.moody.senate.gov",
     "leadership": null,
     "class": 3,
