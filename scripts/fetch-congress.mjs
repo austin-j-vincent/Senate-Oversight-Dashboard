@@ -213,7 +213,9 @@ async function main() {
   }
   await mkdir(dataDir, { recursive: true });
   const senPath = join(dataDir, "senators.json");
+  const cmPath = join(dataDir, "committees.json");
   const prev = existsSync(senPath) ? JSON.parse(await readFile(senPath, "utf8")) : null;
+  const prevCommittees = existsSync(cmPath) ? JSON.parse(await readFile(cmPath, "utf8")) : null;
 
   const classMap = await fetchClassMap();
   const senators = applyFallback(await fetchSenators(classMap), prev);
@@ -233,15 +235,33 @@ async function main() {
   if (prevN && n < prevN - 3)
     throw new Error(`senator count fell ${prevN} → ${n} — aborting to protect committed data`);
 
-  // An empty roster means the upstream YAML changed shape (a 200 with the wrong schema
-  // still parses). Committees always have members, so treat this as a failed fetch
-  // rather than warning and shipping blank rosters. Unlike senators, there is no
-  // per-field fallback for committees at all.
+  // Empty rosters mean the upstream YAML didn't have what we expected (a 200 with a
+  // changed schema still parses fine). Distinguish the two shapes of that:
+  //   - EVERY committee empty  -> the schema itself broke; abort, protect committed data.
+  //   - a few empty            -> more likely a renamed/retired code in COMMITTEES, which
+  //                               the pre-existing warn at fetchCommittees() anticipates.
+  //                               Aborting the whole run for that would silently freeze
+  //                               the senator refresh too, so keep last-known-good for
+  //                               just those committees — the same philosophy as
+  //                               applyFallback(), which committees otherwise lack.
   const empty = committees.filter((c) => !c.majority.length && !c.minority.length);
-  if (empty.length)
+  if (empty.length === committees.length)
     throw new Error(
-      `${empty.length} committee(s) with no members (${empty.map((c) => c.id).join(", ")}) — aborting to protect committed data`
+      `all ${committees.length} committee rosters came back empty — upstream schema likely changed; aborting to protect committed data`
     );
+  if (empty.length && prevCommittees) {
+    const prevById = new Map(prevCommittees.map((c) => [c.id, c]));
+    for (const c of empty) {
+      const p = prevById.get(c.id);
+      if (p?.majority.length || p?.minority.length) {
+        c.majority = p.majority;
+        c.minority = p.minority;
+        console.warn(`[fetch-congress] ${c.id}: empty upstream roster — kept last-known-good`);
+      } else {
+        console.warn(`[fetch-congress] ${c.id}: empty upstream roster and no fallback available`);
+      }
+    }
+  }
 
   // Flag any committee member missing from the senator set (renders as nothing in the UI).
   const known = new Set(Object.keys(senators));
@@ -255,7 +275,7 @@ async function main() {
   // produce a whole-file reorder diff and CI would commit + redeploy on every schedule.
   const sorted = Object.fromEntries(Object.entries(senators).sort(([a], [b]) => a.localeCompare(b)));
   await writeFile(senPath, JSON.stringify(sorted, null, 2) + "\n");
-  await writeFile(join(dataDir, "committees.json"), JSON.stringify(committees, null, 2) + "\n");
+  await writeFile(cmPath, JSON.stringify(committees, null, 2) + "\n");
   await writeFile(join(dataDir, "meta.json"), JSON.stringify({ lastUpdated }, null, 2) + "\n");
   console.log(`[fetch-congress] wrote ${n} senators, ${committees.length} committees (lastUpdated ${lastUpdated}).`);
 }

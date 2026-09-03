@@ -67,8 +67,14 @@ jobs:
           set -euo pipefail
           git update-index -q --refresh || true
 
+          # A failed fetch means whatever is on disk is untrustworthy — possibly a tree
+          # half-written before the error. Refuse to commit it as last-known-good; the
+          # build still proceeds on whatever is there, but nothing gets persisted.
           if [ "$FETCH_OUTCOME" != "success" ]; then
-            echo "::warning title=Data fetch failed::fetch-data exited non-zero (API failure, missing key, or a sanity guard tripped). Building from committed data — check the Fetch step's log."
+            echo "::warning title=Data fetch failed::fetch-data exited non-zero (API failure, missing key, or a sanity guard tripped). Building from committed data, not committing — check the Fetch step's log."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            git checkout -- src/data/ || true
+            exit 0
           fi
 
           # git diff --quiet: 0 = identical, 1 = differs. It sits in an `if` condition
@@ -94,7 +100,18 @@ jobs:
 
       # Last step on purpose: the Pages artifact is already uploaded, so nothing here
       # can block the deploy. Every failure path degrades to a warning.
+      #
+      # The ref guard is load-bearing, not defensive dressing: workflow_dispatch can be
+      # run from ANY branch, and this step ends in `git push origin HEAD:main`. Without
+      # it, "Run workflow" on a feature branch would push that entire branch onto main —
+      # a silent merge with no review. schedule and push:[main] are already main-only.
+      #
+      # Note this is NOT also gated on the fetch succeeding: the keepalive has to run even
+      # when the API is broken, or a dead key would stop the commits that keep the cron
+      # alive and the workflow would be disabled at 60 days anyway. A failed fetch instead
+      # forces changed=false in the detect step, so it falls through to the keepalive path.
       - name: Commit data or keepalive
+        if: github.ref == 'refs/heads/main'
         env:
           DATA_CHANGED: ${{ steps.detect.outputs.changed }}
           MAX_AGE_DAYS: ${{ env.KEEPALIVE_MAX_AGE_DAYS }}
