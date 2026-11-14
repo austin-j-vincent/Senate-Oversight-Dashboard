@@ -90,3 +90,6 @@ body {
 input::placeholder { color: var(--text-tertiary); }
 input:focus, select:focus { outline: none; border-color: var(--gold); }
 button { cursor: pointer; }
+
+/* Bills rows: the panel clips overflow, so draw the keyboard focus ring inside the button. */
+.bill-row-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
