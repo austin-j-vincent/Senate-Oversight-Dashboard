@@ -4,19 +4,23 @@ import TabBar from "./components/TabBar";
 import UnderConstruction from "./components/UnderConstruction";
 import CommitteesPage from "./pages/CommitteesPage";
 import RosterPage from "./pages/RosterPage";
+import BillsPage from "./pages/BillsPage";
 
 export default function App() {
   const { chamber, tab, detail, query, committee, who, navigate } = useHashRoute();
 
-  // The two built Senate pages; every other chamber/tab is a placeholder. Pages stay
+  // The built Senate pages; every other chamber/tab is a placeholder. Pages stay
   // mounted (hidden via display:none) so their filter/scroll state survives navigation.
   const showCommittees = chamber === "senate" && tab === "committees";
   const showRoster = chamber === "senate" && tab === "roster";
-  const showUnderConstruction = !showCommittees && !showRoster;
+  const showBills = chamber === "senate" && tab === "bills";
+  const showUnderConstruction = !showCommittees && !showRoster && !showBills;
 
   const title = showRoster
     ? "Senate Roster"
-    : `${CHAMBER_LABELS[chamber]} Oversight Contact Directory`;
+    : showBills
+      ? "Senate Bill Tracker"
+      : `${CHAMBER_LABELS[chamber]} Oversight Contact Directory`;
 
   return (
     <div style={{
@@ -70,6 +74,9 @@ export default function App() {
         </div>
         <div style={{ display: showRoster ? "" : "none" }}>
           <RosterPage detail={detail} navigate={navigate} />
+        </div>
+        <div style={{ display: showBills ? "" : "none" }}>
+          <BillsPage />
         </div>
         {showUnderConstruction && (
           <UnderConstruction label={`${CHAMBER_LABELS[chamber]} · ${TAB_LABELS[tab]}`} />
